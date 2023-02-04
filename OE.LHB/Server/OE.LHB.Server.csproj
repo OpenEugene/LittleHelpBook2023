@@ -31,8 +31,4 @@
     <ProjectReference Include="..\..\oqtane.framework\Oqtane.Shared\Oqtane.Shared.csproj" />
     <ProjectReference Include="..\Shared\OE.LHB.Shared.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Oqtane.Shared" Version="3.3.1" />
-  </ItemGroup>
 </Project>
