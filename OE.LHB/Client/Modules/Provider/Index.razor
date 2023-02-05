@@ -1,0 +1,71 @@
+@using OE.LHB.Services
+@using OE.LHB.Models
+
+@inherits ModuleBase
+@inject ProviderService ProviderService
+@inject NavigationManager NavigationManager
+
+@if (_providers == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <ActionLink Action="Add" Security="SecurityAccessLevel.Edit" Text="Add Provider" ResourceKey="Add" />
+    <br />
+    <br />
+    @if (@_providers.Count != 0)
+    {
+        <Pager Items="@_providers">
+            <Header>
+                <th style="width: 1px;">&nbsp;</th>
+                <th style="width: 1px;">&nbsp;</th>
+                <th>Name</th>
+            </Header>
+            <Row>
+                <td><ActionLink Action="Edit" Parameters="@($"id=" + context.Id.ToString())" ResourceKey="Edit"  /></td>
+                <td><ActionDialog Header="Delete LHB" Message="Are You Sure You Wish To Delete This LHB?" Action="Delete" Security="SecurityAccessLevel.Edit" Class="btn btn-danger" OnClick="@(async () => await Delete(context))" ResourceKey="Delete"  /></td>
+                <td>@context.Name</td>
+            </Row>
+        </Pager>
+    }
+    else
+    {
+        <p>No Providers</p>
+    }
+}
+
+@code {
+   
+
+    List<Provider> _providers;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _providers = await ProviderService.GetProvidersAsync();
+        }
+        catch (Exception ex)
+        {
+            await logger.LogError(ex, "Error Loading LHB {Error}", ex.Message);
+            AddModuleMessage("Load Error", MessageType.Error);
+        }
+    }
+
+    private async Task Delete(Provider provider)
+    {
+        try
+        {
+            await ProviderService.DeleteProviderAsync(provider.Id);
+            await logger.LogInformation("Provider Deleted {provider}", provider);
+            _providers = await ProviderService.GetProvidersAsync();
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            await logger.LogError(ex, "Error Deleting Provider {provider} {Error}", provider, ex.Message);
+            AddModuleMessage("Delete Error", MessageType.Error);
+        }
+    }
+}

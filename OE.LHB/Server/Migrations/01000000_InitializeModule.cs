@@ -17,13 +17,13 @@ namespace OE.LHB.Migrations
 
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            var entityBuilder = new LHBEntityBuilder(migrationBuilder, ActiveDatabase);
+            var entityBuilder = new ProviderEntityBuilder(migrationBuilder, ActiveDatabase);
             entityBuilder.Create();
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            var entityBuilder = new LHBEntityBuilder(migrationBuilder, ActiveDatabase);
+            var entityBuilder = new ProviderEntityBuilder(migrationBuilder, ActiveDatabase);
             entityBuilder.Drop();
         }
     }

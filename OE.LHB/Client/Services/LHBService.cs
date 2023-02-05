@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Oqtane.Modules;
 using Oqtane.Services;
 using Oqtane.Shared;
-using OE.LHB.Models;
 
 namespace OE.LHB.Services
 {

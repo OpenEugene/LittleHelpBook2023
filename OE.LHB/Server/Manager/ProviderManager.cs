@@ -10,15 +10,15 @@ using OE.LHB.Repository;
 
 namespace OE.LHB.Manager
 {
-    public class LHBManager : MigratableModuleBase, IInstallable, IPortable
+    public class ProviderManager : MigratableModuleBase, IInstallable, IPortable
     {
-        private ILHBRepository _LHBRepository;
+        private ProviderRepository _repository;
         private readonly ITenantManager _tenantManager;
         private readonly IHttpContextAccessor _accessor;
 
-        public LHBManager(ILHBRepository LHBRepository, ITenantManager tenantManager, IHttpContextAccessor accessor)
+        public ProviderManager(ProviderRepository repository, ITenantManager tenantManager, IHttpContextAccessor accessor)
         {
-            _LHBRepository = LHBRepository;
+            _repository = repository;
             _tenantManager = tenantManager;
             _accessor = accessor;
         }
@@ -35,29 +35,12 @@ namespace OE.LHB.Manager
 
         public string ExportModule(Module module)
         {
-            string content = "";
-            List<Models.LHB> LHBs = _LHBRepository.GetLHBs(module.ModuleId).ToList();
-            if (LHBs != null)
-            {
-                content = JsonSerializer.Serialize(LHBs);
-            }
-            return content;
+            return null;
         }
 
         public void ImportModule(Module module, string content, string version)
         {
-            List<Models.LHB> LHBs = null;
-            if (!string.IsNullOrEmpty(content))
-            {
-                LHBs = JsonSerializer.Deserialize<List<Models.LHB>>(content);
-            }
-            if (LHBs != null)
-            {
-                foreach(var LHB in LHBs)
-                {
-                    _LHBRepository.AddLHB(new Models.LHB { ModuleId = module.ModuleId, Name = LHB.Name });
-                }
-            }
+          
         }
     }
 }

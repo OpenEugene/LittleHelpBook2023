@@ -1,0 +1,109 @@
+@using Oqtane.Modules.Controls
+@using OE.LHB.Services
+@using OE.LHB.Models
+
+@inherits ModuleBase
+@inject ProviderService ProviderService
+@inject NavigationManager NavigationManager
+
+<form @ref="form" class="@(validated ? " was-validated" : "needs-validation" )" novalidate>
+    <div class="container">
+        <div class="row mb-1 align-items-center">
+            <Label Class="col-sm-3" For="name" HelpText="Enter a name" ResourceKey="Name">Name: </Label>
+            <div class="col-sm-9">
+                <input id="name" class="form-control" @bind="@_name" required />
+            </div>
+        </div>
+    </div>
+    <button type="button" class="btn btn-success" @onclick="Save">Save</button>
+    <NavLink class="btn btn-secondary" href="@NavigateUrl()">Cancel</NavLink>
+    <br /><br />
+    @if (PageState.Action == "Edit")
+    {
+    <AuditInfo CreatedBy="@_createdby" CreatedOn="@_createdon" ModifiedBy="@_modifiedby" ModifiedOn="@_modifiedon"></AuditInfo>
+    }
+</form>
+
+@code {
+    public override SecurityAccessLevel SecurityAccessLevel => SecurityAccessLevel.Edit;
+
+    public override string Actions => "Add,Edit";
+
+    public override string Title => "Manage LHB";
+
+    public override List<Resource> Resources => new List<Resource>()
+    {
+        new Resource { ResourceType = ResourceType.Stylesheet, Url = ModulePath() + "Module.css" }
+    };
+
+    private ElementReference form;
+    private bool validated = false;
+
+    private int _id;
+    private string _name;
+    private string _createdby;
+    private DateTime _createdon;
+    private string _modifiedby;
+    private DateTime _modifiedon;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            if (PageState.Action == "Edit")
+            {
+                _id = Int32.Parse(PageState.QueryString["id"]);
+                Provider provider = await ProviderService.GetProviderAsync(_id);
+                if (provider != null)
+                {
+                    _name = provider.Name;
+                    _createdby = provider.CreatedBy;
+                    _createdon = provider.CreatedOn;
+                    _modifiedby = provider.ModifiedBy;
+                    _modifiedon = provider.ModifiedOn;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            await logger.LogError(ex, "Error Loading LHB {LHBId} {Error}", _id, ex.Message);
+            AddModuleMessage("Load Error", MessageType.Error);
+        }
+    }
+
+    private async Task Save()
+    {
+        try
+        {
+            validated = true;
+            var interop = new Oqtane.UI.Interop(JSRuntime);
+            if (await interop.FormValid(form))
+            {
+                if (PageState.Action == "Add")
+                {
+                    Provider provider = new();
+                    provider.Name = _name;
+                    provider = await ProviderService.AddProviderAsync(provider);
+                    await logger.LogInformation("LHB Added {provider}", provider);
+                }
+                else
+                {
+                    Provider provider = await ProviderService.GetProviderAsync(_id);
+                    provider.Name = _name;
+                    await ProviderService.UpdateProviderAsync(provider);
+                    await logger.LogInformation("LHB Updated {provider}", provider);
+                }
+                NavigationManager.NavigateTo(NavigateUrl());
+            }
+            else
+            {
+                AddModuleMessage("Validation Failed", MessageType.Warning);
+            }
+        }
+        catch (Exception ex)
+        {
+            await logger.LogError(ex, "Error Saving provider {provider}", ex.Message);
+            AddModuleMessage("Save Error", MessageType.Error);
+        }
+    }
+}

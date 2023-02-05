@@ -9,7 +9,7 @@ namespace OE.LHB.Repository
 {
     public class LHBContext : DBContextBase, ITransientService, IMultiDatabase
     {
-        public virtual DbSet<Models.LHB> LHB { get; set; }
+        public virtual DbSet<Models.Provider> Providers { get; set; }
 
         public LHBContext(ITenantManager tenantManager, IHttpContextAccessor accessor) : base(tenantManager, accessor)
         {
