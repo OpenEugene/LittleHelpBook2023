@@ -22,7 +22,7 @@ namespace OE.LHB.Migrations.EntityBuilders
         protected override ProviderEntityBuilder BuildTable(ColumnsBuilder table)
         {
             Id = AddAutoIncrementColumn(table,"Id");
-            Name = AddMaxStringColumn(table,"Name");
+            Name = AddMaxStringColumn(table,"Name",true);
             AddAuditableColumns(table);
             return this;
         }
