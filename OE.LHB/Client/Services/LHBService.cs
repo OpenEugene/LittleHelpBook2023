@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Oqtane.Modules;
@@ -17,7 +18,7 @@ namespace OE.LHB.Services
         public async Task<List<Models.LHB>> GetLHBsAsync(int ModuleId)
         {
             List<Models.LHB> LHBs = await GetJsonAsync<List<Models.LHB>>(CreateAuthorizationPolicyUrl($"{Apiurl}?moduleid={ModuleId}", EntityNames.Module, ModuleId));
-            return LHBs.OrderBy(item => item.Name).ToList();
+            return LHBs !=null && LHBs.Any()? LHBs.OrderBy(item => item.Name).ToList() : new List<Models.LHB>();
         }
 
         public async Task<Models.LHB> GetLHBAsync(int LHBId, int ModuleId)

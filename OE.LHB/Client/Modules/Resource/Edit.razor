@@ -1,10 +1,11 @@
 @using Oqtane.Modules.Controls
 @using OE.LHB.Services
 @using OE.LHB.Models
-@using Resource = Oqtane.Models.Resource
+@using Resource = OE.LHB.Models.Resource
+
 
 @inherits ModuleBase
-@inject ProviderService ProviderService
+@inject ResourceService ResourceService
 @inject NavigationManager NavigationManager
 
 <form @ref="form" class="@(validated ? " was-validated" : "needs-validation" )" novalidate>
@@ -32,11 +33,11 @@
 
     public override string Title => "Manage LHB";
 
-    public override List<Resource> Resources => new List<Resource>()
+    public override List<Oqtane.Models.Resource> Resources => new List<Oqtane.Models.Resource>()
     {
-        new Resource { ResourceType = ResourceType.Stylesheet, Url = ModulePath() + "Module.css" }
+        new Oqtane.Models.Resource { ResourceType = ResourceType.Stylesheet, Url = ModulePath() + "Module.css" }
     };
-
+    
     private ElementReference form;
     private bool validated = false;
 
@@ -54,20 +55,20 @@
             if (PageState.Action == "Edit")
             {
                 _id = Int32.Parse(PageState.QueryString["id"]);
-                Provider provider = await ProviderService.GetProviderAsync(_id);
-                if (provider != null)
+                Resource resource = await ResourceService.GetResourceAsync(_id);
+                if (resource != null)
                 {
-                    _name = provider.Name;
-                    _createdby = provider.CreatedBy;
-                    _createdon = provider.CreatedOn;
-                    _modifiedby = provider.ModifiedBy;
-                    _modifiedon = provider.ModifiedOn;
+                    _name = resource.Name;
+                    _createdby = resource.CreatedBy;
+                    _createdon = resource.CreatedOn;
+                    _modifiedby = resource.ModifiedBy;
+                    _modifiedon = resource.ModifiedOn;
                 }
             }
         }
         catch (Exception ex)
         {
-            await logger.LogError(ex, "Error Loading LHB {LHBId} {Error}", _id, ex.Message);
+            await logger.LogError(ex, "Error Loading Resource {ResourceId} {Error}", _id, ex.Message);
             AddModuleMessage("Load Error", MessageType.Error);
         }
     }
@@ -82,17 +83,18 @@
             {
                 if (PageState.Action == "Add")
                 {
-                    Provider provider = new();
-                    provider.Name = _name;
-                    provider = await ProviderService.AddProviderAsync(provider);
-                    await logger.LogInformation("LHB Added {provider}", provider);
+                    Resource resource = new() {
+                        Name = _name
+                    };
+                    resource = await ResourceService.AddResourceAsync(resource);
+                    await logger.LogInformation("Resource Added {provider}", resource);
                 }
                 else
                 {
-                    Provider provider = await ProviderService.GetProviderAsync(_id);
-                    provider.Name = _name;
-                    await ProviderService.UpdateProviderAsync(provider);
-                    await logger.LogInformation("LHB Updated {provider}", provider);
+                    Resource resource = await ResourceService.GetResourceAsync(_id);
+                    resource.Name = _name;
+                    await ResourceService.UpdateResourceAsync(resource);
+                    await logger.LogInformation("Resource Updated {resource}", resource);
                 }
                 NavigationManager.NavigateTo(NavigateUrl());
             }
