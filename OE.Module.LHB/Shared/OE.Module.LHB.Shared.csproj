@@ -19,4 +19,8 @@
     <PackageReference Include="Oqtane.Shared" Version="4.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\oqtane.framework\Oqtane.Shared\Oqtane.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

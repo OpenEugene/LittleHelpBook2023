@@ -26,6 +26,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\oqtane.framework\Oqtane.Server\Oqtane.Server.csproj" />
+    <ProjectReference Include="..\..\oqtane.framework\Oqtane.Shared\Oqtane.Shared.csproj" />
     <ProjectReference Include="..\Shared\OE.Module.LHB.Shared.csproj" />
   </ItemGroup>
 
