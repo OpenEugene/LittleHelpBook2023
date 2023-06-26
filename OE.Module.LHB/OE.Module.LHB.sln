@@ -1,10 +1,7 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28621.142
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Oqtane.Server", "..\oqtane.framework\Oqtane.Server\Oqtane.Server.csproj", "{3AB6FCC9-EFEB-4C0E-A2CF-8103914C5196}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OE.Module.LHB.Client", "Client\OE.Module.LHB.Client.csproj", "{AA8E58A1-CD09-4208-BF66-A8BB341FD669}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OE.Module.LHB.Server", "Server\OE.Module.LHB.Server.csproj", "{04B05448-788F-433D-92C0-FED35122D45A}"
@@ -13,16 +10,26 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OE.Module.LHB.Shared", "Sha
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OE.Module.LHB.Package", "Package\OE.Module.LHB.Package.csproj", "{C5CE512D-CBB7-4545-AF0F-9B6591A0C3A7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Theme", "Theme", "{2F3004A9-2969-4027-88EF-ABC7A39D2F60}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OE.Theme.LHB.Client", "..\OE.Theme.LHB\Client\OE.Theme.LHB.Client.csproj", "{7FD7B1AA-2C59-4DD6-8580-62E5B6CC652A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OE.Theme.LHB.Package", "..\OE.Theme.LHB\Package\OE.Theme.LHB.Package.csproj", "{CD2451F7-0DDE-4727-BB98-F8877D946CE5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Oqtane", "Oqtane", "{FB1D65D1-2DC4-4E0E-823E-5D624FD1E819}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Oqtane.Server", "..\oqtane.framework\Oqtane.Server\Oqtane.Server.csproj", "{69584E29-AF30-4959-993C-967DCFFBFCAB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Oqtane.Client", "..\oqtane.framework\Oqtane.Client\Oqtane.Client.csproj", "{2F2D1578-05FC-421F-835D-3E391F63D87A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Oqtane.Shared", "..\oqtane.framework\Oqtane.Shared\Oqtane.Shared.csproj", "{22C7D6FA-6E86-4389-B099-26C2DF88CB14}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3AB6FCC9-EFEB-4C0E-A2CF-8103914C5196}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3AB6FCC9-EFEB-4C0E-A2CF-8103914C5196}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3AB6FCC9-EFEB-4C0E-A2CF-8103914C5196}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3AB6FCC9-EFEB-4C0E-A2CF-8103914C5196}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AA8E58A1-CD09-4208-BF66-A8BB341FD669}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AA8E58A1-CD09-4208-BF66-A8BB341FD669}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA8E58A1-CD09-4208-BF66-A8BB341FD669}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,9 +46,36 @@ Global
 		{C5CE512D-CBB7-4545-AF0F-9B6591A0C3A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5CE512D-CBB7-4545-AF0F-9B6591A0C3A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5CE512D-CBB7-4545-AF0F-9B6591A0C3A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FD7B1AA-2C59-4DD6-8580-62E5B6CC652A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FD7B1AA-2C59-4DD6-8580-62E5B6CC652A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FD7B1AA-2C59-4DD6-8580-62E5B6CC652A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FD7B1AA-2C59-4DD6-8580-62E5B6CC652A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD2451F7-0DDE-4727-BB98-F8877D946CE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD2451F7-0DDE-4727-BB98-F8877D946CE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD2451F7-0DDE-4727-BB98-F8877D946CE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD2451F7-0DDE-4727-BB98-F8877D946CE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69584E29-AF30-4959-993C-967DCFFBFCAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69584E29-AF30-4959-993C-967DCFFBFCAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69584E29-AF30-4959-993C-967DCFFBFCAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69584E29-AF30-4959-993C-967DCFFBFCAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F2D1578-05FC-421F-835D-3E391F63D87A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F2D1578-05FC-421F-835D-3E391F63D87A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F2D1578-05FC-421F-835D-3E391F63D87A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F2D1578-05FC-421F-835D-3E391F63D87A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22C7D6FA-6E86-4389-B099-26C2DF88CB14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22C7D6FA-6E86-4389-B099-26C2DF88CB14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22C7D6FA-6E86-4389-B099-26C2DF88CB14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22C7D6FA-6E86-4389-B099-26C2DF88CB14}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7FD7B1AA-2C59-4DD6-8580-62E5B6CC652A} = {2F3004A9-2969-4027-88EF-ABC7A39D2F60}
+		{CD2451F7-0DDE-4727-BB98-F8877D946CE5} = {2F3004A9-2969-4027-88EF-ABC7A39D2F60}
+		{69584E29-AF30-4959-993C-967DCFFBFCAB} = {FB1D65D1-2DC4-4E0E-823E-5D624FD1E819}
+		{2F2D1578-05FC-421F-835D-3E391F63D87A} = {FB1D65D1-2DC4-4E0E-823E-5D624FD1E819}
+		{22C7D6FA-6E86-4389-B099-26C2DF88CB14} = {FB1D65D1-2DC4-4E0E-823E-5D624FD1E819}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1D016F15-46FE-4726-8DFD-2E4FD4DC7668}
