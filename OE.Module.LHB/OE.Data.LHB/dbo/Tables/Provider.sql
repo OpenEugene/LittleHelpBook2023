@@ -8,8 +8,8 @@
     [IsActive] BIT NOT NULL DEFAULT 1,
         
     [CreatedBy]        NVARCHAR (256) NOT NULL,
-    [CreatedOn]        DATETIME2 (7)  NOT NULL,
+    [CreatedOn]        DATETIME2 (7)  NOT NULL DEFAULT GETDATE(),
     [ModifiedBy]       NVARCHAR (256) NOT NULL,
-    [ModifiedOn]       DATETIME2 (7)  NOT NULL,
+    [ModifiedOn]       DATETIME2 (7)  NOT NULL DEFAULT GETDATE(),
     CONSTRAINT [PK_Provider] PRIMARY KEY CLUSTERED ([ProviderId] ASC)
 );

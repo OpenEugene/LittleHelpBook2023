@@ -7,8 +7,8 @@
 	[Description]  NVARCHAR (1000) NULL,
 	       
     [CreatedBy]        NVARCHAR (256) NOT NULL,
-    [CreatedOn]        DATETIME2 (7)  NOT NULL,
+    [CreatedOn]        DATETIME2 (7)  NOT NULL DEFAULT GETDATE(),
     [ModifiedBy]       NVARCHAR (256) NOT NULL,
-    [ModifiedOn]       DATETIME2 (7)  NOT NULL,
+    [ModifiedOn]       DATETIME2 (7)  NOT NULL DEFAULT GETDATE(),
     CONSTRAINT [PK_PhoneNumber] PRIMARY KEY CLUSTERED ([PhoneNumberId] ASC)
    );
