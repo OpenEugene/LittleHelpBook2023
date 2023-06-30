@@ -1,0 +1,28 @@
+@namespace OE.Theme.LHB
+@inherits ContainerBase
+
+<MudContainer>
+     <MudStack>
+            <MudStack Row="true">
+                <ModuleActions />
+                <MudText Typo="Typo.h2">@((MarkupString)title)</MudText>
+            </MudStack>
+        <ModuleInstance />
+    </MudStack>
+</MudContainer>
+
+@code {
+    private string title = "";
+    public override string Name => "Container LHB";
+    protected override void OnParametersSet()
+    {
+        if (!string.IsNullOrEmpty(ModuleState.ControlTitle))
+        {
+            title = ModuleState.ControlTitle;
+        }
+        else
+        {
+            title = ModuleState.Title;
+        }
+    }
+}
