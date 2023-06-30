@@ -27,11 +27,6 @@
     <ProjectReference Include="..\Shared\OE.Module.LHB.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Oqtane.Client" Version="4.0.0" />
-    <PackageReference Include="Oqtane.Shared" Version="4.0.0" />
-  </ItemGroup>
-
   <PropertyGroup>
     <!-- there may be other elements here -->
     <BlazorWebAssemblyEnableLinking>false</BlazorWebAssemblyEnableLinking>

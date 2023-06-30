@@ -21,6 +21,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\oqtane.framework\Oqtane.Client\Oqtane.Client.csproj" />
+    <ProjectReference Include="..\..\oqtane.framework\Oqtane.Shared\Oqtane.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="Oqtane.Client"><HintPath>..\..\oqtane.framework\Oqtane.Server\bin\Debug\net7.0\Oqtane.Client.dll</HintPath></Reference>
     <Reference Include="Oqtane.Shared"><HintPath>..\..\oqtane.framework\Oqtane.Server\bin\Debug\net7.0\Oqtane.Shared.dll</HintPath></Reference>
   </ItemGroup>
