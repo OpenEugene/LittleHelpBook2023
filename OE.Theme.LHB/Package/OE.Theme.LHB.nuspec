@@ -5,7 +5,7 @@
     <version>1.0.0</version>
     <authors>OE</authors>
     <owners>OE</owners>
-    <title>LHB</title>
+    <title>LHB Theme</title>
     <description>[Description]</description>
     <copyright>OE</copyright>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -21,8 +21,10 @@
   </metadata>
   <files>
     <file src="..\Client\bin\Release\net7.0\OE.Theme.LHB.Client.Oqtane.dll" target="lib\net7.0" /> 
-    <file src="..\Client\bin\Release\net7.0\OE.Theme.LHB.Client.Oqtane.pdb" target="lib\net7.0" /> 
-    <file src="..\Client\wwwroot\**\*.*" target="wwwroot" /> 
+    <file src="..\Client\bin\Release\net7.0\OE.Theme.LHB.Client.Oqtane.pdb" target="lib\net7.0" />
+	<file src="..\Client\Libs\MudBlazor.dll" target="lib\net7.0" />
+
+	<file src="..\Client\wwwroot\**\*.*" target="wwwroot" /> 
     <file src="icon.png" target="" />
   </files>
 </package>

@@ -9,7 +9,7 @@ namespace OE.Theme.LHB
     {
         public Oqtane.Models.Theme Theme => new Oqtane.Models.Theme
         {
-            Name = "LHB",
+            Name = "LHB Theme",
             Version = "1.0.0",
             PackageName = "OE.Theme.LHB",
             Resources = new List<Resource>()
