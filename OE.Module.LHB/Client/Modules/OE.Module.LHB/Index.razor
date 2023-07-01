@@ -7,12 +7,9 @@
 @inject NavigationManager NavigationManager
 @inject IStringLocalizer<Index> Localizer
 
-@if (_LHBs == null)
+@if (_LHBs != null)
 {
-    <p><em>Loading...</em></p>
-}
-else
-{
+
     <ActionLink Action="Add" Security="SecurityAccessLevel.Edit" Text="Add LHB" ResourceKey="Add" />
     <br />
     <br />
