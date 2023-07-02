@@ -13,12 +13,12 @@ namespace OE.Module.LHB.Manager
 {
     public class LHBManager : MigratableModuleBase, IInstallable, IPortable
     {
-        private readonly ILHBRepository _LHBRepository;
+        private readonly ProviderRepository _providerRepository;
         private readonly IDBContextDependencies _DBContextDependencies;
 
-        public LHBManager(ILHBRepository LHBRepository, IDBContextDependencies DBContextDependencies)
+        public LHBManager(ProviderRepository providerRepository, IDBContextDependencies DBContextDependencies)
         {
-            _LHBRepository = LHBRepository;
+            _providerRepository = providerRepository;
             _DBContextDependencies = DBContextDependencies;
         }
 
@@ -35,28 +35,11 @@ namespace OE.Module.LHB.Manager
         public string ExportModule(Oqtane.Models.Module module)
         {
             string content = "";
-            List<Models.LHB> LHBs = _LHBRepository.GetLHBs(module.ModuleId).ToList();
-            if (LHBs != null)
-            {
-                content = JsonSerializer.Serialize(LHBs);
-            }
             return content;
         }
 
         public void ImportModule(Oqtane.Models.Module module, string content, string version)
         {
-            List<Models.LHB> LHBs = null;
-            if (!string.IsNullOrEmpty(content))
-            {
-                LHBs = JsonSerializer.Deserialize<List<Models.LHB>>(content);
-            }
-            if (LHBs != null)
-            {
-                foreach(var LHB in LHBs)
-                {
-                    _LHBRepository.AddLHB(new Models.LHB { ModuleId = module.ModuleId, Name = LHB.Name });
-                }
-            }
         }
     }
 }

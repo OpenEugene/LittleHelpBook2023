@@ -1,0 +1,58 @@
+@using Microsoft.AspNetCore.Components.Forms
+@using Oqtane.Modules.Controls
+@using OE.Module.LHB.Services
+@using System.ComponentModel.DataAnnotations
+
+@inherits ModuleBase
+@inject ProviderService ProviderService
+@inject NavigationManager NavigationManager
+@inject IStringLocalizer<Edit> Localizer
+
+<MudCard>
+    <MudCardHeader>
+        <MudText Typo="Typo.h2">@Localizer["Title"]</MudText>
+    </MudCardHeader>
+    <MudCardContent>
+
+        <MudField Label="@Localizer["Name"]" @bind-Value="model.Name" Disabled="true" />
+            
+    </MudCardContent>
+    <MudCardActions>
+        <MudButton Color="Color.Primary" OnClick="Back" >@Localizer["Back"]</MudButton>
+    </MudCardActions>
+</MudCard>
+
+@code {
+    MudForm form;
+    public override SecurityAccessLevel SecurityAccessLevel => SecurityAccessLevel.Edit;
+
+    public override string Actions => "Detail";
+
+    public override string Title => "Provider Details";
+    private int _id;
+    private M.Provider model;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            if (PageState.Action == "Edit")
+            {
+                _id = Int32.Parse(PageState.QueryString["id"]);
+                model = await ProviderService.GetProviderAsync(_id);
+            }
+        }
+        catch (Exception ex)
+        {
+            await logger.LogError(ex, "Error Loading LHB {id} {message}", _id, ex.Message);
+            AddModuleMessage(Localizer["Message.LoadError"], MessageType.Error);
+        }
+    }
+
+    private void Back()
+    {
+        NavigationManager.NavigateTo(NavigateUrl());
+
+    }
+
+}
