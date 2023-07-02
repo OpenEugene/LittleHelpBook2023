@@ -13,9 +13,9 @@
         <MudText Typo="Typo.h2">@Localizer["Title"]</MudText>
     </MudCardHeader>
     <MudCardContent>
-
-        <MudField Label="@Localizer["Name"]" @bind-Value="model.Name" Disabled="true" />
-            
+        @if(_model!=null){
+            <MudField Label="@Localizer["Name"]" @bind-Value="_model.Name" Disabled="true" />
+        }
     </MudCardContent>
     <MudCardActions>
         <MudButton Color="Color.Primary" OnClick="Back" >@Localizer["Back"]</MudButton>
@@ -30,17 +30,16 @@
 
     public override string Title => "Provider Details";
     private int _id;
-    private M.Provider model;
+    private M.Provider _model;
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            if (PageState.Action == "Edit")
-            {
-                _id = Int32.Parse(PageState.QueryString["id"]);
-                model = await ProviderService.GetProviderAsync(_id);
-            }
+           
+            _id = Int32.Parse(PageState.QueryString["id"]);
+            _model = await ProviderService.GetProviderAsync(_id);
+          
         }
         catch (Exception ex)
         {

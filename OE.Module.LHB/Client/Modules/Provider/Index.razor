@@ -63,7 +63,7 @@
 
     private void Selected(M.Provider item)
     {
-        var url = EditUrl("Detail");
+        var url = EditUrl("Detail",$"id={item.ProviderId}");
         NavigateUrl(url);
     }
 }

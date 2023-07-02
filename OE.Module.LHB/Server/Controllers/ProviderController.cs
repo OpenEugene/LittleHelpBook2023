@@ -25,20 +25,18 @@ namespace OE.Module.LHB.Controllers
 
         // GET: api/<controller>?moduleid=x
         [HttpGet]
-        [Authorize(Policy = PolicyNames.ViewModule)]
-        public IEnumerable<M.Provider> Get(string moduleid)
+        public IEnumerable<M.Provider> Get()
         {
-            int ModuleId;
-            if (int.TryParse(moduleid, out ModuleId) && IsAuthorizedEntityId(EntityNames.Module, ModuleId))
-            {
-                return _providerRepository.GetLHBs(ModuleId);
+            try { 
+                return _providerRepository.GetProviders();
             }
-            else
+            catch (System.Exception ex)
             {
-                _logger.Log(LogLevel.Error, this, LogFunction.Security, "Unauthorized LHB Get Attempt {ModuleId}", moduleid);
-                HttpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                _logger.Log(LogLevel.Error, this, LogFunction.Security, ex, "Get Providers Failed");
+                HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 return null;
             }
+           
         }
 
         // GET api/<controller>/5
@@ -57,7 +55,7 @@ namespace OE.Module.LHB.Controllers
         {
             if (ModelState.IsValid )
             {
-                item = _providerRepository.AddLHB(item);
+                item = _providerRepository.AddProvider(item);
                 _logger.Log(LogLevel.Information, this, LogFunction.Create, "Provider Added {item}", item);
             }
             else

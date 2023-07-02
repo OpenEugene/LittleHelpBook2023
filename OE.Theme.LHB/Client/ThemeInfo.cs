@@ -25,7 +25,6 @@ namespace OE.Theme.LHB
                 new Resource { ResourceType = ResourceType.Stylesheet, Url = "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"},
                 new Resource { ResourceType = ResourceType.Stylesheet, Url = "~/Theme.css" },
 
-                
                 // loading the Mud script last seems to help
                 new Resource { ResourceType = ResourceType.Script, Url = "_content/MudBlazor_oqtane/MudBlazor.min.js"},
 

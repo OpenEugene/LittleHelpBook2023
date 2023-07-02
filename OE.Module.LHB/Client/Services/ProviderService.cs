@@ -18,7 +18,11 @@ namespace OE.Module.LHB.Services
         public async Task<List<M.Provider>> GetProvidersAsync()
         {
             List<M.Provider> list = await GetJsonAsync<List<M.Provider>>($"{Apiurl}");
-            return list.OrderBy(item => item.Name).ToList();
+            if (list != null)
+            {
+                return list.OrderBy(item => item.Name).ToList();
+            }
+            return null;
         }
 
         public async Task<M.Provider> GetProviderAsync(int id)

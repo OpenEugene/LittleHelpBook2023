@@ -16,9 +16,9 @@ namespace OE.Module.LHB.Repository
             _db = context;
         }
 
-        public IEnumerable<M.Provider> GetLHBs(int ModuleId)
+        public IEnumerable<M.Provider> GetProviders()
         {
-            return _db.Provider.Where(item => item.ProviderId == ModuleId);
+            return _db.Provider.AsNoTracking();
         }
 
         public M.Provider GetProvider(int id)
@@ -38,11 +38,11 @@ namespace OE.Module.LHB.Repository
             }
         }
 
-        public M.Provider AddLHB(M.Provider LHB)
+        public M.Provider AddProvider(M.Provider item)
         {
-            _db.Provider.Add(LHB);
+            _db.Provider.Add(item);
             _db.SaveChanges();
-            return LHB;
+            return item;
         }
 
         public M.Provider UpdateLHB(M.Provider LHB)
