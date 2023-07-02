@@ -1,0 +1,69 @@
+@using OE.Module.LHB.Services
+@using OE.Module.LHB.Shared.Models
+
+@inherits ModuleBase
+@inject ProviderService ProviderService
+@inject NavigationManager NavigationManager
+@inject IStringLocalizer<Index> Localizer
+
+<MudCard>
+    <MudCardHeader>
+        <MudText Typo="Typo.h2">@Localizer["Title"]</MudText>
+    </MudCardHeader>
+    <MudCardContent>
+        <MudDataGrid Items="@_list" T="M.Provider" SelectedItemChanged="Selected"  >
+            <Columns>
+                <PropertyColumn Property="x => x.Name" Title="Name" />
+                <PropertyColumn Property="x => x.Description" />
+           </Columns>
+           <NoRecordsContent>
+                <MudText>@Localizer["Message.DisplayNone"]</MudText>
+           </NoRecordsContent>
+        </MudDataGrid>
+    </MudCardContent>
+    <MudCardActions>
+        <ActionLink Action="Add" Security="SecurityAccessLevel.Edit"  ResourceKey="Add" />
+    </MudCardActions>
+
+</MudCard>
+    
+    
+@code {
+
+    List<M.Provider> _list;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _list = await ProviderService.GetProvidersAsync();
+        }
+        catch (Exception ex)
+        {
+            await logger.LogError(ex, "Error Loading Providers {Error}", ex.Message);
+            AddModuleMessage(Localizer["Message.LoadError"], MessageType.Error);
+        }
+    }
+
+    private async Task Delete(M.Provider item)
+    {
+        try
+        {
+            await ProviderService.DeleteProviderAsync(item.ProviderId);
+            await logger.LogInformation("Provider Deleted {item}", item);
+            _list = await ProviderService.GetProvidersAsync();
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            await logger.LogError(ex, "Error Deleting Provider {item} {Error}", item, ex.Message);
+            AddModuleMessage(Localizer["Message.DeleteError"], MessageType.Error);
+        }
+    }
+
+    private void Selected(M.Provider item)
+    {
+        var url = EditUrl("Detail");
+        NavigateUrl(url);
+    }
+}
