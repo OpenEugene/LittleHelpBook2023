@@ -73,7 +73,7 @@ namespace OE.Module.LHB.Controllers
         {
             if (ModelState.IsValid && _providerRepository.GetProvider(item.ProviderId, false) != null)
             {
-                item = _providerRepository.UpdateLHB(item);
+                item = _providerRepository.UpdateProvider(item);
                 _logger.Log(LogLevel.Information, this, LogFunction.Update, "Provider Updated {item}",item);
             }
             else
@@ -93,7 +93,7 @@ namespace OE.Module.LHB.Controllers
             M.Provider item = _providerRepository.GetProvider(id);
             if (item != null )
             {
-                _providerRepository.DeleteLHB(id);
+                _providerRepository.DeleteProvider(id);
                 _logger.Log(LogLevel.Information, this, LogFunction.Delete, "Provider Deleted {id}", id);
             }
             else

@@ -26,16 +26,8 @@ namespace OE.Module.LHB.Repository
             return GetProvider(id, true);
         }
 
-        public M.Provider GetProvider(int id, bool tracking)
-        {
-            if (tracking)
-            {
-                return _db.Provider.Find(id);
-            }
-            else
-            {
-                return _db.Provider.AsNoTracking().FirstOrDefault(item => item.ProviderId == id);
-            }
+        public M.Provider GetProvider(int id, bool tracking) {
+            return tracking ? _db.Provider.Find(id) : _db.Provider.AsNoTracking().FirstOrDefault(item => item.ProviderId == id);
         }
 
         public M.Provider AddProvider(M.Provider item)
@@ -45,18 +37,21 @@ namespace OE.Module.LHB.Repository
             return item;
         }
 
-        public M.Provider UpdateLHB(M.Provider LHB)
+        public M.Provider UpdateProvider(M.Provider providerId)
         {
-            _db.Entry(LHB).State = EntityState.Modified;
+            _db.Entry(providerId).State = EntityState.Modified;
             _db.SaveChanges();
-            return LHB;
+            return providerId;
         }
 
-        public void DeleteLHB(int LHBId)
+        public void DeleteProvider(int providerId)
         {
-            M.Provider LHB = _db.Provider.Find(LHBId);
-            _db.Provider.Remove(LHB);
+            var item = _db.Provider.Find(providerId);
+
+            if (item == null) return;
+            _db.Provider.Remove(item);
             _db.SaveChanges();
+
         }
     }
 }
