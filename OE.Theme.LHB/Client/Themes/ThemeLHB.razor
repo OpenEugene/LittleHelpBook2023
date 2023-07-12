@@ -1,6 +1,7 @@
 @namespace OE.Theme.LHB
 @inherits ThemeBase
 @using MudBlazor
+@inject NavigationManager NavigationManager
 
 <MudThemeProvider />
 <MudDialogProvider />
@@ -8,116 +9,85 @@
 
 <MudLayout>
     <MudAppBar Elevation="1">
-        <MudIconButton Icon="@MudBlazor.Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
-        <MudSpacer />
-        <UserProfile /> <Login /> <ControlPanel ButtonClass="btn-outline-light" />
+       <MudIconButton Icon="@MudBlazor.Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
+       <MudSpacer />
+        @if (UserSecurity.IsAuthorized(PageState.User, RoleNames.Admin))
+        {
+            if (PageState.EditMode)
+            {
+                <MudIconButton Icon="@MudBlazor.Icons.Material.Filled.Edit" Color="Color.Inherit" Edge="Edge.End" OnClick="@(async () => await ToggleEditMode(PageState.EditMode))" />
+            }
+            else
+            {
+                <MudIconButton Icon="@MudBlazor.Icons.Material.Outlined.Edit" Color="Color.Inherit" Edge="Edge.End" OnClick="@(async () => await ToggleEditMode(PageState.EditMode))" />
+            }
+            <MudIconButton Icon="@MudBlazor.Icons.Material.Filled.Settings" Color="Color.Inherit" Edge="Edge.End" OnClick="@((e) => Settings())" />
+        }
     </MudAppBar>
     <MudDrawer @bind-Open="@open" Elevation="1">
         <MudDrawerHeader>
             <MudText Typo="Typo.h6">Little Help Book</MudText>
         </MudDrawerHeader>
-       <MenuVerticalLHB></MenuVerticalLHB>
+        <MudDrawerContainer>
+            <MudNavLink Icon="@MudBlazor.Icons.Material.Outlined.Home" Href="pnr" Match="NavLinkMatch.All">Home</MudNavLink>
+            <MudNavLink Icon="@MudBlazor.Icons.Material.Outlined.VolunteerActivism" Href="lhb/Providers">Providers</MudNavLink>
+            <MudNavLink Icon="@MudBlazor.Icons.Material.Outlined.QuestionMark" Href="lhb/faq">Faq</MudNavLink>
+        </MudDrawerContainer>
     </MudDrawer>
-    <MudMainContent Class="pt-16 px-16">
-        <MudContainer Class="mt-6">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <Pane Name="@PaneNames.Admin" />
-                        </div>
-                    </div>
-                </div>
-                <Pane Name="Top Full Width" />
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <Pane Name="Top 100%" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <Pane Name="Left 50%" />
-                        </div>
-                        <div class="col-md-6">
-                            <Pane Name="Right 50%" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <Pane Name="Left 33%" />
-                        </div>
-                        <div class="col-md-4">
-                            <Pane Name="Center 33%" />
-                        </div>
-                        <div class="col-md-4">
-                            <Pane Name="Right 33%" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <Pane Name="Left Outer 25%" />
-                        </div>
-                        <div class="col-md-3">
-                            <Pane Name="Left Inner 25%" />
-                        </div>
-                        <div class="col-md-3">
-                            <Pane Name="Right Inner 25%" />
-                        </div>
-                        <div class="col-md-3">
-                            <Pane Name="Right Outer 25%" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <Pane Name="Left 25%" />
-                        </div>
-                        <div class="col-md-6">
-                            <Pane Name="Center 50%" />
-                        </div>
-                        <div class="col-md-3">
-                            <Pane Name="Right 25%" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-8">
-                            <Pane Name="Left Sidebar 66%" />
-                        </div>
-                        <div class="col-md-4">
-                            <Pane Name="Right Sidebar 33%" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <Pane Name="Left Sidebar 33%" />
-                        </div>
-                        <div class="col-md-8">
-                            <Pane Name="Right Sidebar 66%" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <Pane Name="Bottom 100%" />
-                        </div>
-                    </div>
-                </div>
-                <Pane Name="Bottom Full Width" />
+    <MudMainContent >
+        <MudContainer >
+             <MudMainContent id="layout">
+                <MudContainer id="content">
+                    <MudPaper Elevation="0">
+                        <EditablePane Name="@PaneNames.Admin" />
+                    </MudPaper>
+                    <MudPaper Elevation="0">
+                        <EditablePane Name="Content Pane" />
+                    </MudPaper>
+                </MudContainer>
+            </MudMainContent>
         </MudContainer>
     </MudMainContent>
 </MudLayout>
 
 @code {
-    bool open = false;
+    bool open = true;
 
     void ToggleDrawer()
     {
         open = !open;
     }
 
+    private async Task ToggleEditMode(bool editMode)
+    {
+        PageState.EditMode = !editMode;
+
+        NavigationManager.NavigateTo(NavigateUrl(PageState.Page.Path, "edit=" + ((PageState.EditMode) ? "1" : "0")));
+    }
+
+    void Settings()
+    {
+        NavigationManager.NavigateTo("/admin");
+    }
+
     public override string Name => "ThemeLHB";
 
-    public override string Panes => PaneNames.Admin + ",Top Full Width,Top 100%,Left 50%,Right 50%,Left 33%,Center 33%,Right 33%,Left Outer 25%,Left Inner 25%,Right Inner 25%,Right Outer 25%,Left 25%,Center 50%,Right 25%,Left Sidebar 66%,Right Sidebar 33%,Left Sidebar 33%,Right Sidebar 66%,Bottom 100%,Bottom Full Width";
+    public override string Panes => PaneNames.Admin + ",Content Pane";
 
     private bool _isDarkMode;
+
+    public override List<Resource> Resources => new List<Resource>
+      ()
+    {
+   
+        // bulk of the app style is Mudblazor.
+        new Resource { ResourceType = ResourceType.Stylesheet, Url = "_content/MudBlazor_oqtane/MudBlazor.min.css" },
+        new Resource { ResourceType = ResourceType.Stylesheet, Url = "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" },
+        new Resource { ResourceType = ResourceType.Stylesheet, Url = "Themes/OE.Theme.LHB/Theme.css" },
+
+        // loading the Mud script last seems to help
+        new Resource { ResourceType = ResourceType.Script, Url = "_content/MudBlazor_oqtane/MudBlazor.min.js" },
+    };
 
     
 }

@@ -1,28 +1,30 @@
 @using OE.Module.LHB.Services
 @using OE.Module.LHB.Shared.Models
 
+@namespace OE.Provider
 @inherits ModuleBase
 @inject ProviderService ProviderService
 @inject NavigationManager NavigationManager
-@inject IStringLocalizer<Index> Localizer
+@inject IStringLocalizer<Index> Loc
+
 
 <MudCard>
     <MudCardHeader>
-        <MudText Typo="Typo.h2">@Localizer["Title"]</MudText>
+        <MudText Typo="Typo.h2">@Loc["Title"]</MudText>
     </MudCardHeader>
     <MudCardContent>
-        <MudDataGrid Items="@_list" T="M.Provider" SelectedItemChanged="Selected"  >
+        <MudDataGrid Items="@_list" T="M.Provider" SelectedItemChanged="Selected">
             <Columns>
                 <PropertyColumn Property="x => x.Name" Title="Name" />
                 <PropertyColumn Property="x => x.Description" />
            </Columns>
            <NoRecordsContent>
-                <MudText>@Localizer["Message.DisplayNone"]</MudText>
+                <MudText>@Loc["Message.DisplayNone"]</MudText>
            </NoRecordsContent>
         </MudDataGrid>
     </MudCardContent>
     <MudCardActions>
-        <ActionLink Action="Add" Security="SecurityAccessLevel.Edit"  ResourceKey="Add" />
+        <ActionLink Action="Add" Security="SecurityAccessLevel.Edit" ResourceKey="Add" />
     </MudCardActions>
 
 </MudCard>
@@ -41,7 +43,7 @@
         catch (Exception ex)
         {
             await logger.LogError(ex, "Error Loading Providers {Error}", ex.Message);
-            AddModuleMessage(Localizer["Message.LoadError"], MessageType.Error);
+            AddModuleMessage(Loc["Message.LoadError"], MessageType.Error);
         }
     }
 
@@ -57,7 +59,7 @@
         catch (Exception ex)
         {
             await logger.LogError(ex, "Error Deleting Provider {item} {Error}", item, ex.Message);
-            AddModuleMessage(Localizer["Message.DeleteError"], MessageType.Error);
+            AddModuleMessage(Loc["Message.DeleteError"], MessageType.Error);
         }
     }
 

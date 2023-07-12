@@ -13,7 +13,7 @@ namespace OE.Module.Provider
             ServerManagerType = "OE.Module.LHB.Manager.LHBManager, OE.Module.LHB.Server.Oqtane",
             ReleaseVersions = "1.0.0",
             Dependencies = "OE.Module.LHB.Shared.Oqtane",
-            PackageName = "OE.Module.LHB" 
+            PackageName = "OE.Module.LHB"
         };
     }
 }

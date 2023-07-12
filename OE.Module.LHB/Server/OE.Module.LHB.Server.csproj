@@ -19,6 +19,22 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="wwwroot\_content\MudBlazor_oqtane\MudBlazor.min.css" />
+    <None Remove="wwwroot\_content\MudBlazor_oqtane\MudBlazor.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\_content\MudBlazor_oqtane\MudBlazor.min.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="wwwroot\_content\MudBlazor_oqtane\MudBlazor.min.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="7.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.5" />
