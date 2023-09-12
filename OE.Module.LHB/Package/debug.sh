@@ -1,0 +1,7 @@
+cp -f "../Client/bin/Debug/net7.0/OE.Module.LHB.Client.Oqtane.dll" "../../oqtane.framework/Oqtane.Server/bin/Debug/net7.0/"
+cp -f "../Client/bin/Debug/net7.0/OE.Module.LHB.Client.Oqtane.pdb" "../../oqtane.framework/Oqtane.Server/bin/Debug/net7.0/"
+cp -f "../Server/bin/Debug/net7.0/OE.Module.LHB.Server.Oqtane.dll" "../../oqtane.framework/Oqtane.Server/bin/Debug/net7.0/"
+cp -f "../Server/bin/Debug/net7.0/OE.Module.LHB.Server.Oqtane.pdb" "../../oqtane.framework/Oqtane.Server/bin/Debug/net7.0/"
+cp -f "../Shared/bin/Debug/net7.0/OE.Module.LHB.Shared.Oqtane.dll" "../../oqtane.framework/Oqtane.Server/bin/Debug/net7.0/"
+cp -f "../Shared/bin/Debug/net7.0/OE.Module.LHB.Shared.Oqtane.pdb" "../../oqtane.framework/Oqtane.Server/bin/Debug/net7.0/"
+cp -rf "../Server/wwwroot/"* "../../oqtane.framework/Oqtane.Server/wwwroot/"

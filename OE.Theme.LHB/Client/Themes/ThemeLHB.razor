@@ -1,0 +1,93 @@
+@namespace OE.Theme.LHB
+@inherits ThemeBase
+@using MudBlazor
+@inject NavigationManager NavigationManager
+
+<MudThemeProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar Elevation="1">
+       <MudIconButton Icon="@MudBlazor.Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer" />
+       <MudSpacer />
+        @if (UserSecurity.IsAuthorized(PageState.User, RoleNames.Admin))
+        {
+            if (PageState.EditMode)
+            {
+                <MudIconButton Icon="@MudBlazor.Icons.Material.Filled.Edit" Color="Color.Inherit" Edge="Edge.End" OnClick="@(async () => await ToggleEditMode(PageState.EditMode))" />
+            }
+            else
+            {
+                <MudIconButton Icon="@MudBlazor.Icons.Material.Outlined.Edit" Color="Color.Inherit" Edge="Edge.End" OnClick="@(async () => await ToggleEditMode(PageState.EditMode))" />
+            }
+            <MudIconButton Icon="@MudBlazor.Icons.Material.Filled.Settings" Color="Color.Inherit" Edge="Edge.End" OnClick="@((e) => Settings())" />
+        }
+    </MudAppBar>
+    <MudDrawer @bind-Open="@open" Elevation="1">
+        <MudDrawerHeader>
+            <MudText Typo="Typo.h6">Little Help Book</MudText>
+        </MudDrawerHeader>
+        <MudDrawerContainer>
+            <MudNavLink Icon="@MudBlazor.Icons.Material.Outlined.Home" Href="pnr" Match="NavLinkMatch.All">Home</MudNavLink>
+            <MudNavLink Icon="@MudBlazor.Icons.Material.Outlined.VolunteerActivism" Href="lhb/Providers">Providers</MudNavLink>
+            <MudNavLink Icon="@MudBlazor.Icons.Material.Outlined.QuestionMark" Href="lhb/faq">Faq</MudNavLink>
+        </MudDrawerContainer>
+    </MudDrawer>
+    <MudMainContent >
+        <MudContainer >
+             <MudMainContent id="layout">
+                <MudContainer id="content">
+                    <MudPaper Elevation="0">
+                        <EditablePane Name="@PaneNames.Admin" />
+                    </MudPaper>
+                    <MudPaper Elevation="0">
+                        <EditablePane Name="Content Pane" />
+                    </MudPaper>
+                </MudContainer>
+            </MudMainContent>
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    bool open = true;
+
+    void ToggleDrawer()
+    {
+        open = !open;
+    }
+
+    private async Task ToggleEditMode(bool editMode)
+    {
+        PageState.EditMode = !editMode;
+
+        NavigationManager.NavigateTo(NavigateUrl(PageState.Page.Path, "edit=" + ((PageState.EditMode) ? "1" : "0")));
+    }
+
+    void Settings()
+    {
+        NavigationManager.NavigateTo("/admin");
+    }
+
+    public override string Name => "ThemeLHB";
+
+    public override string Panes => PaneNames.Admin + ",Content Pane";
+
+    private bool _isDarkMode;
+
+    public override List<Resource> Resources => new List<Resource>
+      ()
+    {
+   
+        // bulk of the app style is Mudblazor.
+        new Resource { ResourceType = ResourceType.Stylesheet, Url = "_content/MudBlazor_oqtane/MudBlazor.min.css" },
+        new Resource { ResourceType = ResourceType.Stylesheet, Url = "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" },
+        new Resource { ResourceType = ResourceType.Stylesheet, Url = "Themes/OE.Theme.LHB/Theme.css" },
+
+        // loading the Mud script last seems to help
+        new Resource { ResourceType = ResourceType.Script, Url = "_content/MudBlazor_oqtane/MudBlazor.min.js" },
+    };
+
+    
+}

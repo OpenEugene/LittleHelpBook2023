@@ -1,0 +1,9 @@
+@namespace OE.Theme.LHB.Controls
+@inherits MenuItemsBase
+
+<MudNavMenu>
+@foreach (var childPage in GetChildPages())
+{
+    <MudNavLink Match="NavLinkMatch.All" Href="@GetUrl(childPage)">@childPage.Name</MudNavLink>
+}
+</MudNavMenu>

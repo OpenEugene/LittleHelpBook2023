@@ -1,0 +1,93 @@
+@using Microsoft.AspNetCore.Components.Forms
+@using Oqtane.Modules.Controls
+@using OE.Module.LHB.Services
+@using System.ComponentModel.DataAnnotations
+
+@inherits ModuleBase
+@inject ProviderService ProviderService
+@inject NavigationManager NavigationManager
+@inject IStringLocalizer<Edit> Localizer
+
+<MudCard>
+    <MudCardHeader>
+        <MudText Typo="Typo.h2">@Localizer["Title"]</MudText>
+    </MudCardHeader>
+    <MudCardContent>
+        <EditForm Model="@model" OnValidSubmit="OnValidSubmit">   
+            
+            <MudTextField T="string" 
+                HelperText="@Localizer["Name.HelpText"]" 
+                Label="@Localizer["Name"]" 
+                Required="true" 
+                RequiredError="Name is required!"
+                @bind-Value="model.Name" 
+                For="@(() => model.Name)" />
+            
+        </EditForm>
+    </MudCardContent>
+    <MudCardActions>
+        <MudButton ButtonType="ButtonType.Submit" Color="Color.Primary" >@Localizer["Save"]</MudButton>
+        <MudButton Color="Color.Primary">@Localizer["Cancel"]</MudButton>
+    </MudCardActions>
+</MudCard>
+
+@code {
+    MudForm form;
+    public override SecurityAccessLevel SecurityAccessLevel => SecurityAccessLevel.Edit;
+
+    public override string Actions => "Add,Edit";
+
+    public override string Title => "Manage Provider";
+    private int _id;
+    private M.Provider model;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            if (PageState.Action == "Edit")
+            {
+                _id = Int32.Parse(PageState.QueryString["id"]);
+                model = await ProviderService.GetProviderAsync(_id);
+            }
+        }
+        catch (Exception ex)
+        {
+            await logger.LogError(ex, "Error Loading LHB {id} {message}", _id, ex.Message);
+            AddModuleMessage(Localizer["Message.LoadError"], MessageType.Error);
+        }
+    }
+
+
+    private void OnValidSubmit(EditContext context)
+    {
+        // having a hard time calling async method from the EditForm
+        Save(context).GetAwaiter().GetResult();
+    }
+
+    private async Task Save(EditContext context)
+    {
+        try
+        {
+            if (PageState.Action == "Edit")
+            {
+                await ProviderService.UpdateProviderAsync(model);
+                await logger.LogInformation("Provider Saved {model}", model);
+            }
+            else
+            {
+                await ProviderService.AddProviderAsync(model);
+                await logger.LogInformation("Provider Added {model}", model);
+            }
+            // return to the index
+            NavigationManager.NavigateTo(NavigateUrl());
+        }
+        catch (Exception ex)
+        {
+            await logger.LogError(ex, "Error Saving Provider {model} {message} ",model, ex.Message);
+            AddModuleMessage(Localizer["Message.SaveError"], MessageType.Error);
+        }
+
+    }
+
+}
