@@ -1,6 +1,9 @@
-﻿CREATE TABLE [dbo].[PhoneNumber] (
+CREATE TABLE [dbo].[PhoneNumber] (
     [PhoneNumberId] INT             IDENTITY (1, 1) NOT NULL,
-    [PhoneNumber]   VARCHAR (200)   NULL,
+    [CountryCode]   INT             NULL,
+    [AreaCode]      INT             NULL,
+    [Number]        NVARCHAR (500)  NULL,
+    [Extension]     INT             NULL,
     [Description]   NVARCHAR (500)  NULL,
     [l10N]          NVARCHAR (4000) NULL,
     [CreatedBy]     NVARCHAR (256)  NOT NULL,
@@ -9,4 +12,6 @@
     [ModifiedOn]    DATETIME2 (7)   DEFAULT (getdate()) NOT NULL,
     CONSTRAINT [PK_PhoneNumber] PRIMARY KEY CLUSTERED ([PhoneNumberId] ASC)
 );
+
+
 
