@@ -12,7 +12,11 @@ namespace OE.Theme.LHB
         {
             Name = "LHB Theme",
             Version = "1.0.0",
-            PackageName = "OE.Theme.LHB"
+            PackageName = "OE.Theme.LHB",
+            Resources = new List<Resource>()
+            {
+                new Resource { ResourceType = ResourceType.Script, Url = "_content/MudBlazor_oqtane/MudBlazor.min.js",Level=ResourceLevel.Site },
+            }
         };
 
     }
