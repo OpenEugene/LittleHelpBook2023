@@ -1,0 +1,39 @@
+﻿@namespace Oqtane.Themes.Controls
+@inherits ModuleActionsBase
+@attribute [OqtaneIgnore]
+
+@if (PageState.EditMode && UserSecurity.IsAuthorized(PageState.User, PermissionNames.Edit, PageState.Page.PermissionList) && PageState.Action == Constants.DefaultAction)
+{
+    <MudMenu EndIcon="@MudBlazor.Icons.Material.Filled.MoreVert">
+            @foreach (var action in Actions.Where(item => !item.Name.Contains("Pane")))
+            {
+                if (string.IsNullOrEmpty(action.Name))
+                {
+                    <MudDivider />
+                }
+                else
+                {
+				<MudMenuItem OnClick="(async () => await ModuleAction(action))">
+					<MudText>@action.Name</MudText>
+                </MudMenuItem>
+                }
+            }
+            @if (Actions.Where(item => item.Name.Contains("Pane")).Any())
+            {
+			<MudMenuItem >
+                <MudMenu Label="Move To &gt;" ActivationEvent="MouseEvent.MouseOver" AnchorOrigin="Origin.TopRight" TransformOrigin="Origin.TopLeft">
+                 @foreach (var action in Actions.Where(item => item.Name.Contains("Pane")))
+                    {
+                        <MudMenuItem OnClick="(async () => await ModuleAction(action))">
+                            <MudText>@action.Name</MudText>
+                        </MudMenuItem>
+                    }
+                </MudMenu>
+			</MudMenuItem>
+				
+            }
+	</MudMenu>
+}
+@code {
+
+}

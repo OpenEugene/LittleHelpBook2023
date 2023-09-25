@@ -44,7 +44,7 @@
 		{
 
 
-			ContainerType = PageState.Site.DefaultContainerType;
+			ContainerType = PageState.Page.DefaultContainerType;
 			_allModuleDefinitions = await ModuleDefinitionService.GetModuleDefinitionsAsync(PageState.Site.SiteId);
 			_commonModuleDefinitions = _allModuleDefinitions.Where(item => item.Categories.Contains("Common")).ToList();
 
@@ -86,7 +86,7 @@
 
 		pageModule.Pane = PaneName;
 		pageModule.Order = int.MaxValue;
-		pageModule.ContainerType = ""; // default
+		pageModule.ContainerType = ContainerType;  // could make this OE.Theme.LHB.ContainerLHB, OE.Theme.LHB.Client.Oqtane
         
 		await PageModuleService.AddPageModuleAsync(pageModule);
 		await PageModuleService.UpdatePageModuleOrderAsync(pageModule.PageId, pageModule.Pane);
