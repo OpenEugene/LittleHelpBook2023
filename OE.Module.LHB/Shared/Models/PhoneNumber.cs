@@ -8,18 +8,27 @@ using Microsoft.EntityFrameworkCore;
 
 namespace OE.Module.LHB.Shared.Models;
 
-[Table("ProviderPhoneNumber")]
-public partial class ProviderPhoneNumber
+[Table("PhoneNumber")]
+public partial class PhoneNumber
 {
     [Key]
-    public int ProviderPhoneNumberId { get; set; }
-
-    public int ProviderId { get; set; }
-
     public int PhoneNumberId { get; set; }
 
-    [Required]
-    public bool? IsActive { get; set; }
+    public int? CountryCode { get; set; }
+
+    public int? AreaCode { get; set; }
+
+    [StringLength(500)]
+    public string Number { get; set; }
+
+    public int? Extension { get; set; }
+
+    [StringLength(500)]
+    public string Description { get; set; }
+
+    [Column("l10N")]
+    [StringLength(4000)]
+    public string L10N { get; set; }
 
     [Required]
     [StringLength(256)]
@@ -33,11 +42,6 @@ public partial class ProviderPhoneNumber
 
     public DateTime ModifiedOn { get; set; }
 
-    [ForeignKey("PhoneNumberId")]
-    [InverseProperty("ProviderPhoneNumbers")]
-    public virtual PhoneNumber PhoneNumber { get; set; }
-
-    [ForeignKey("ProviderId")]
-    [InverseProperty("ProviderPhoneNumbers")]
-    public virtual Provider Provider { get; set; }
+    [InverseProperty("PhoneNumber")]
+    public virtual ICollection<ProviderPhoneNumber> ProviderPhoneNumbers { get; set; } = new List<ProviderPhoneNumber>();
 }

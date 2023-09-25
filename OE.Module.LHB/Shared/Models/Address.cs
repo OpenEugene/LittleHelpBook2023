@@ -42,13 +42,6 @@ public partial class Address
 
     public float? Latitude { get; set; }
 
-    [StringLength(500)]
-    public string Notes { get; set; }
-
-    [Column("l10N")]
-    [StringLength(4000)]
-    public string L10N { get; set; }
-
     [Required]
     public bool? IsActive { get; set; }
 
@@ -63,4 +56,7 @@ public partial class Address
     public string ModifiedBy { get; set; }
 
     public DateTime ModifiedOn { get; set; }
+
+    [InverseProperty("Address")]
+    public virtual ICollection<ProviderAddress> ProviderAddresses { get; set; } = new List<ProviderAddress>();
 }

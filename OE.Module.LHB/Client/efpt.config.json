@@ -1,59 +1,30 @@
 ﻿{
-   "CodeGenerationMode": 3,
-   "ContextClassName": "OE.Data.LHBContext",
+   "CodeGenerationMode": 2,
+   "ContextClassName": null,
    "ContextNamespace": null,
    "DefaultDacpacSchema": null,
    "FilterSchemas": false,
    "IncludeConnectionString": false,
    "ModelNamespace": null,
    "OutputContextPath": null,
-   "OutputPath": "Models",
+   "OutputPath": null,
    "PreserveCasingWithRegex": true,
-   "ProjectRootNamespace": "OE.Module.LHB.Shared",
+   "ProjectRootNamespace": null,
    "Schemas": null,
    "SelectedHandlebarsLanguage": 0,
-   "SelectedToBeGenerated": 2,
+   "SelectedToBeGenerated": 0,
    "T4TemplatePath": null,
-   "Tables": [
-      {
-         "Name": "[dbo].[Address]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Attribute]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[PhoneNumber]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Provider]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[ProviderAddress]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[ProviderAttribute]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[ProviderPhoneNumber]",
-         "ObjectType": 0
-      }
-   ],
+   "Tables": [ ],
    "UiHint": "..\\OE.Data.LHB\\OE.Data.LHB.sqlproj",
    "UncountableWords": null,
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": false,
    "UseDateOnlyTimeOnly": false,
    "UseDbContextSplitting": false,
-   "UseFluentApiOnly": false,
+   "UseFluentApiOnly": true,
    "UseHandleBars": false,
    "UseHierarchyId": false,
-   "UseInflector": true,
+   "UseInflector": false,
    "UseLegacyPluralizer": false,
    "UseManyToManyEntity": false,
    "UseNoDefaultConstructor": false,

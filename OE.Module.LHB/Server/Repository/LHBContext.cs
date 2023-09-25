@@ -13,6 +13,7 @@ namespace OE.Module.LHB.Repository
         public virtual DbSet<M.Address> Address { get; set; }
         public virtual DbSet<M.Attribute> Attribute { get; set; }
         public virtual DbSet<M.Provider> Provider { get; set; }
+        public virtual DbSet<M.ProviderAddress> ProviderAddress { get; set; }
         public virtual DbSet<M.ProviderPhoneNumber> ProviderPhoneNumber { get; set; }
 
         public LHBContext(IDBContextDependencies DBContextDependencies) : base(DBContextDependencies)

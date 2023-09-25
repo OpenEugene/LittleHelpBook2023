@@ -8,15 +8,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace OE.Module.LHB.Shared.Models;
 
-[Table("ProviderPhoneNumber")]
-public partial class ProviderPhoneNumber
+[Table("ProviderAttribute")]
+public partial class ProviderAttribute
 {
     [Key]
-    public int ProviderPhoneNumberId { get; set; }
+    public int ProviderAttributeId { get; set; }
 
     public int ProviderId { get; set; }
 
-    public int PhoneNumberId { get; set; }
+    public int AttributeId { get; set; }
 
     [Required]
     public bool? IsActive { get; set; }
@@ -33,11 +33,11 @@ public partial class ProviderPhoneNumber
 
     public DateTime ModifiedOn { get; set; }
 
-    [ForeignKey("PhoneNumberId")]
-    [InverseProperty("ProviderPhoneNumbers")]
-    public virtual PhoneNumber PhoneNumber { get; set; }
+    [ForeignKey("AttributeId")]
+    [InverseProperty("ProviderAttributes")]
+    public virtual Attribute Attribute { get; set; }
 
     [ForeignKey("ProviderId")]
-    [InverseProperty("ProviderPhoneNumbers")]
+    [InverseProperty("ProviderAttributes")]
     public virtual Provider Provider { get; set; }
 }

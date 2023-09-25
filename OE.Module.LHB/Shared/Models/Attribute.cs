@@ -38,4 +38,7 @@ public partial class Attribute
     public string ModifiedBy { get; set; }
 
     public DateTime ModifiedOn { get; set; }
+
+    [InverseProperty("Attribute")]
+    public virtual ICollection<ProviderAttribute> ProviderAttributes { get; set; } = new List<ProviderAttribute>();
 }

@@ -49,5 +49,11 @@ public partial class Provider
     public DateTime ModifiedOn { get; set; }
 
     [InverseProperty("Provider")]
+    public virtual ICollection<ProviderAddress> ProviderAddresses { get; set; } = new List<ProviderAddress>();
+
+    [InverseProperty("Provider")]
+    public virtual ICollection<ProviderAttribute> ProviderAttributes { get; set; } = new List<ProviderAttribute>();
+
+    [InverseProperty("Provider")]
     public virtual ICollection<ProviderPhoneNumber> ProviderPhoneNumbers { get; set; } = new List<ProviderPhoneNumber>();
 }
