@@ -7,32 +7,45 @@
 @inject NavigationManager NavigationManager
 @inject IStringLocalizer<Index> Loc
 
+<MudDataGrid 
+    Items="@_list" 
+    T="M.Provider" 
+    RowClick="@Selected"
+    SortMode="SortMode.Multiple" 
+    Filterable="true" 
+    QuickFilter="@_quickFilter">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">@Loc["Title"]</MudText>
+        <MudSpacer />
+        <MudIconButton Title="New" Icon="@MudBlazor.Icons.Material.Filled.AddCard" Color="Color.Default" OnClick="Add" />
+        <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+                      AdornmentIcon="@MudBlazor.Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <Columns>
+        <TemplateColumn >
+            <CellTemplate>
+                <MudIconButton 
+                    Size="@Size.Small" 
+                    Icon="@MudBlazor.Icons.Material.Outlined.Edit" 
+                    OnClick="@(()=>Edit(context.Item))" />
+            </CellTemplate>
+        </TemplateColumn>
+        <PropertyColumn Property="x => x.Name" Title="Name" />
+        <PropertyColumn Property="x => x.Description" />
+    </Columns>
+    <NoRecordsContent>
+        <MudText>@Loc["Message.DisplayNone"]</MudText>
+    </NoRecordsContent>
+    <PagerContent>
+        <MudDataGridPager T="M.Provider" />
+    </PagerContent>
+</MudDataGrid>
 
-<MudCard>
-    <MudCardHeader>
-        <MudText Typo="Typo.h2">@Loc["Title"]</MudText>
-    </MudCardHeader>
-    <MudCardContent>
-        <MudDataGrid Items="@_list" T="M.Provider" SelectedItemChanged="Selected">
-            <Columns>
-                <PropertyColumn Property="x => x.Name" Title="Name" />
-                <PropertyColumn Property="x => x.Description" />
-           </Columns>
-           <NoRecordsContent>
-                <MudText>@Loc["Message.DisplayNone"]</MudText>
-           </NoRecordsContent>
-        </MudDataGrid>
-    </MudCardContent>
-    <MudCardActions>
-        <ActionLink Action="Add" Security="SecurityAccessLevel.Edit" ResourceKey="Add" />
-    </MudCardActions>
-
-</MudCard>
-    
     
 @code {
 
     List<M.Provider> _list;
+    private string _searchString;
 
     protected override async Task OnInitializedAsync()
     {
@@ -46,6 +59,20 @@
             AddModuleMessage(Loc["Message.LoadError"], MessageType.Error);
         }
     }
+
+    private Func<M.Provider, bool> _quickFilter => x =>
+       {
+       if (string.IsNullOrWhiteSpace(_searchString))
+           return true;
+
+       if (x.Description.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+           return true;
+
+       if (x.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+           return true;
+
+       return false;
+       };
 
     private async Task Delete(M.Provider item)
     {
@@ -63,9 +90,21 @@
         }
     }
 
-    private void Selected(M.Provider item)
+    private void Selected(DataGridRowClickEventArgs<M.Provider> args)
     {
-        var url = EditUrl("Detail",$"id={item.ProviderId}");
-        NavigateUrl(url);
+        var url = EditUrl("Detail",$"id={args.Item.ProviderId}");
+        NavigationManager.NavigateTo(url);
+    }
+    
+    private void Edit(M.Provider item)
+    {
+        var url = EditUrl("Edit", $"id={item.ProviderId}");
+        NavigationManager.NavigateTo(url);
+    }
+
+    private void Add()
+    {
+        var url = EditUrl("Add");
+        NavigationManager.NavigateTo(url);
     }
 }

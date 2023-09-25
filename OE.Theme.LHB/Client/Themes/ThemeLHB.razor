@@ -35,17 +35,13 @@
         </MudDrawerContainer>
     </MudDrawer>
     <MudMainContent >
-        <MudContainer >
-             <MudMainContent id="layout">
-                <MudContainer id="content">
-                    <MudPaper Elevation="0">
-                        <EditablePane Name="@PaneNames.Admin" />
-                    </MudPaper>
-                    <MudPaper Elevation="0">
-                        <EditablePane Name="Content Pane" />
-                    </MudPaper>
-                </MudContainer>
-            </MudMainContent>
+        <MudContainer id="content" Class="main-content">
+            <MudPaper Elevation="0">
+                <EditablePane Name="@PaneNames.Admin" />
+            </MudPaper>
+            <MudPaper Elevation="0">
+                <EditablePane Name="Content Pane" />
+            </MudPaper>
         </MudContainer>
     </MudMainContent>
 </MudLayout>
@@ -87,5 +83,4 @@
 
     };
 
-    
 }

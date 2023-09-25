@@ -3,17 +3,22 @@
 @using OE.Module.LHB.Services
 @using System.ComponentModel.DataAnnotations
 
+@namespace OE.Provider
 @inherits ModuleBase
 @inject ProviderService ProviderService
 @inject NavigationManager NavigationManager
-@inject IStringLocalizer<Edit> Localizer
+@inject IStringLocalizer<Index> Localizer
 
 <MudCard>
     <MudCardHeader>
-        <MudText Typo="Typo.h2">@Localizer["Title"]</MudText>
+        <MudText Typo="Typo.h6">@Localizer["Title"]</MudText>
     </MudCardHeader>
     <MudCardContent>
-        <EditForm Model="@model" OnValidSubmit="OnValidSubmit">   
+        @if (model != null)
+        {
+            <MudForm @ref="form" 
+            @bind-IsValid="@success" 
+            @bind-Errors="@errors">   
             
             <MudTextField T="string" 
                 HelperText="@Localizer["Name.HelpText"]" 
@@ -23,29 +28,39 @@
                 @bind-Value="model.Name" 
                 For="@(() => model.Name)" />
             
-        </EditForm>
+            </MudForm>
+        }
     </MudCardContent>
     <MudCardActions>
-        <MudButton ButtonType="ButtonType.Submit" Color="Color.Primary" >@Localizer["Save"]</MudButton>
-        <MudButton Color="Color.Primary">@Localizer["Cancel"]</MudButton>
+      
+
+        <MudButton Color="Color.Primary" OnClick="Save">@Localizer["Save"]</MudButton>
+        <MudButton Color="Color.Secondary" OnClick="Back">@Localizer["Cancel"]</MudButton>
     </MudCardActions>
 </MudCard>
 
 @code {
     MudForm form;
-    public override SecurityAccessLevel SecurityAccessLevel => SecurityAccessLevel.Edit;
+    // public override SecurityAccessLevel SecurityAccessLevel => SecurityAccessLevel.Edit;
 
     public override string Actions => "Add,Edit";
-
+    //public override bool UseAdminContainer => true;
     public override string Title => "Manage Provider";
     private int _id;
     private M.Provider model;
+
+    bool success;
+    string[] errors = { };
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            if (PageState.Action == "Edit")
+            if (PageState.Action == "Add")
+            {
+                model = new();
+            }
+            else //edit
             {
                 _id = Int32.Parse(PageState.QueryString["id"]);
                 model = await ProviderService.GetProviderAsync(_id);
@@ -59,26 +74,25 @@
     }
 
 
-    private void OnValidSubmit(EditContext context)
-    {
-        // having a hard time calling async method from the EditForm
-        Save(context).GetAwaiter().GetResult();
-    }
-
-    private async Task Save(EditContext context)
+    private async Task Save()
     {
         try
         {
-            if (PageState.Action == "Edit")
+            await form.Validate();
+            if (form.IsValid)
             {
-                await ProviderService.UpdateProviderAsync(model);
-                await logger.LogInformation("Provider Saved {model}", model);
+                if (PageState.Action == "Edit")
+                {
+                    await ProviderService.UpdateProviderAsync(model);
+                    await logger.LogInformation("Provider Saved {model}", model);
+                }
+                else
+                {
+                    await ProviderService.AddProviderAsync(model);
+                    await logger.LogInformation("Provider Added {model}", model);
+                }
             }
-            else
-            {
-                await ProviderService.AddProviderAsync(model);
-                await logger.LogInformation("Provider Added {model}", model);
-            }
+           
             // return to the index
             NavigationManager.NavigateTo(NavigateUrl());
         }
@@ -89,5 +103,9 @@
         }
 
     }
+    private void Back()
+    {
+        NavigationManager.NavigateTo(NavigateUrl());
 
+    }
 }

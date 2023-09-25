@@ -3,14 +3,15 @@
 @using OE.Module.LHB.Services
 @using System.ComponentModel.DataAnnotations
 
+@namespace OE.Provider
 @inherits ModuleBase
 @inject ProviderService ProviderService
 @inject NavigationManager NavigationManager
-@inject IStringLocalizer<Edit> Localizer
+@inject IStringLocalizer<Index> Localizer
 
 <MudCard>
     <MudCardHeader>
-        <MudText Typo="Typo.h2">@Localizer["Title"]</MudText>
+        <MudText Typo="Typo.h6">@Localizer["Title"]</MudText>
     </MudCardHeader>
     <MudCardContent>
         @if(_model!=null){
@@ -18,13 +19,13 @@
         }
     </MudCardContent>
     <MudCardActions>
-        <MudButton Color="Color.Primary" OnClick="Back" >@Localizer["Back"]</MudButton>
+        <MudButton Color="Color.Secondary" OnClick="Back" >@Localizer["Back"]</MudButton>
     </MudCardActions>
 </MudCard>
 
 @code {
     MudForm form;
-    public override SecurityAccessLevel SecurityAccessLevel => SecurityAccessLevel.Edit;
+    //public override SecurityAccessLevel SecurityAccessLevel => SecurityAccessLevel.View;
 
     public override string Actions => "Detail";
 
@@ -36,16 +37,21 @@
     {
         try
         {
-           
+
             _id = Int32.Parse(PageState.QueryString["id"]);
             _model = await ProviderService.GetProviderAsync(_id);
-          
+
         }
         catch (Exception ex)
         {
             await logger.LogError(ex, "Error Loading LHB {id} {message}", _id, ex.Message);
             AddModuleMessage(Localizer["Message.LoadError"], MessageType.Error);
         }
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var foo = 1;
     }
 
     private void Back()
