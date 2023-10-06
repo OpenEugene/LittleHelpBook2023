@@ -33,11 +33,5 @@ public partial class ProviderAttribute
 
     public DateTime ModifiedOn { get; set; }
 
-    [ForeignKey("AttributeId")]
-    [InverseProperty("ProviderAttributes")]
-    public virtual Attribute Attribute { get; set; }
 
-    [ForeignKey("ProviderId")]
-    [InverseProperty("ProviderAttributes")]
-    public virtual Provider Provider { get; set; }
 }

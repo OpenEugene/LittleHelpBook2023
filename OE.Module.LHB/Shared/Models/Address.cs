@@ -57,6 +57,5 @@ public partial class Address
 
     public DateTime ModifiedOn { get; set; }
 
-    [InverseProperty("Address")]
-    public virtual ICollection<ProviderAddress> ProviderAddresses { get; set; } = new List<ProviderAddress>();
+
 }

@@ -33,11 +33,5 @@ public partial class ProviderPhoneNumber
 
     public DateTime ModifiedOn { get; set; }
 
-    [ForeignKey("PhoneNumberId")]
-    [InverseProperty("ProviderPhoneNumbers")]
-    public virtual PhoneNumber PhoneNumber { get; set; }
 
-    [ForeignKey("ProviderId")]
-    [InverseProperty("ProviderPhoneNumbers")]
-    public virtual Provider Provider { get; set; }
 }

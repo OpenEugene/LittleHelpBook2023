@@ -10,6 +10,7 @@ using Oqtane.Controllers;
 using System.Net;
 
 using M = OE.Module.LHB.Shared.Models;
+using OE.Module.LHB.Shared.ViewModels;
 
 namespace OE.Module.LHB.Controllers
 {
@@ -28,7 +29,8 @@ namespace OE.Module.LHB.Controllers
         public IEnumerable<M.Provider> Get()
         {
             try { 
-                return _lhbRepository.GetProviders();
+                var list = _lhbRepository.GetProviders();
+                return list;
             }
             catch (System.Exception ex)
             {
@@ -46,6 +48,18 @@ namespace OE.Module.LHB.Controllers
         {
             M.Provider item = _lhbRepository.GetProvider(id);
             return item;
+        }
+
+        // GET api/<controller>/5
+        [HttpGet("vm/{id}")]
+       // [Authorize(Policy = PolicyNames.ViewModule)]
+        public ActionResult<ProviderViewModel> GetVM(int id)
+        {
+            var item = _lhbRepository.GetProviderViewModel(id);
+            if (item == null) { 
+                return NotFound();
+            }
+            return Ok(item);
         }
 
         // POST api/<controller>

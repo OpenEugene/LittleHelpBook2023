@@ -42,6 +42,5 @@ public partial class PhoneNumber
 
     public DateTime ModifiedOn { get; set; }
 
-    [InverseProperty("PhoneNumber")]
-    public virtual ICollection<ProviderPhoneNumber> ProviderPhoneNumbers { get; set; } = new List<ProviderPhoneNumber>();
+
 }

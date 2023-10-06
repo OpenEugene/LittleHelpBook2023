@@ -60,34 +60,6 @@
     <Folder Include="dbo\Tables\" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="dbo\Tables\Visitor.sql" />
-    <Build Include="dbo\Tables\UserRole.sql" />
-    <Build Include="dbo\Tables\User.sql" />
-    <Build Include="dbo\Tables\UrlMapping.sql" />
-    <Build Include="dbo\Tables\Theme.sql" />
-    <Build Include="dbo\Tables\Tenant.sql" />
-    <Build Include="dbo\Tables\Site.sql" />
-    <Build Include="dbo\Tables\Setting.sql" />
-    <Build Include="dbo\Tables\Role.sql" />
-    <Build Include="dbo\Tables\Profile.sql" />
-    <Build Include="dbo\Tables\Permission.sql" />
-    <Build Include="dbo\Tables\PageModule.sql" />
-    <Build Include="dbo\Tables\Page.sql" />
-    <Build Include="dbo\Tables\OELHB.sql" />
-    <Build Include="dbo\Tables\Notification.sql" />
-    <Build Include="dbo\Tables\ModuleDefinition.sql" />
-    <Build Include="dbo\Tables\Module.sql" />
-    <Build Include="dbo\Tables\Log.sql" />
-    <Build Include="dbo\Tables\Language.sql" />
-    <Build Include="dbo\Tables\JobLog.sql" />
-    <Build Include="dbo\Tables\Job.sql" />
-    <Build Include="dbo\Tables\HtmlText.sql" />
-    <Build Include="dbo\Tables\Folder.sql" />
-    <Build Include="dbo\Tables\File.sql" />
-    <Build Include="dbo\Tables\AspNetUsers.sql" />
-    <Build Include="dbo\Tables\AspNetUserLogins.sql" />
-    <Build Include="dbo\Tables\AspNetUserClaims.sql" />
-    <Build Include="dbo\Tables\Alias.sql" />
     <Build Include="dbo\Tables\__EFMigrationsHistory.sql" />
     <Build Include="dbo\Tables\Provider.sql" />
     <Build Include="dbo\Tables\PhoneNumber.sql" />

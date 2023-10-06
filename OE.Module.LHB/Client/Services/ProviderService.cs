@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using OE.Module.LHB.Shared.ViewModels;
 using Oqtane.Modules;
 using Oqtane.Services;
 using Oqtane.Shared;
@@ -28,6 +29,12 @@ namespace OE.Module.LHB.Services
         public async Task<M.Provider> GetProviderAsync(int id)
         {
             return await GetJsonAsync<M.Provider>($"{Apiurl}/{id}");
+        }
+
+        public async Task<ProviderViewModel> GetProviderViewModelAsync(int id)
+        {
+            var vm = await GetJsonAsync<ProviderViewModel>($"{Apiurl}/vm/{id}");
+            return vm;
         }
 
         public async Task<M.Provider> AddProviderAsync(M.Provider item)

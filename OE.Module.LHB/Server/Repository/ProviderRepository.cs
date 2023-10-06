@@ -5,6 +5,7 @@ using Oqtane.Modules;
 
 using M = OE.Module.LHB.Shared.Models;
 using OE.Module.LHB.Shared.ViewModels;
+using System.Security.Cryptography;
 
 namespace OE.Module.LHB.Repository
 {
@@ -13,7 +14,8 @@ namespace OE.Module.LHB.Repository
 
         public IEnumerable<M.Provider> GetProviders()
         {
-            return _db.Provider.AsNoTracking();
+            var list = _db.Provider.AsNoTracking();
+            return list;
         }
 
         public M.Provider GetProvider(int id)
@@ -25,25 +27,16 @@ namespace OE.Module.LHB.Repository
             return tracking ? _db.Provider.Find(id) : _db.Provider.AsNoTracking().FirstOrDefault(item => item.ProviderId == id);
         }
 
-        public List<ProviderViewModel> GetProviderViewModel(int id) {
-            var list = from p in _db.Provider
-                join pa in _db.ProviderAddress on p.ProviderId equals pa.ProviderId
-                join a in _db.Address on pa.AddressId equals a.AddressId
-                where p.ProviderId == id
-                select new ProviderViewModel {
-                    ProviderId = p.ProviderId,
-                    Name = p.Name,
-                    //Addresses = new M.Address {
-                    //    AddressId = a.AddressId,
-                    //    Address1 = a.Address1,
-                    //    Address2 = a.Address2,
-                    //    City = a.City,
-                    //    State = a.State,
-                    //    PostalCode = a.PostalCode
-                    //}
-                };
-            return null;
-
+        public ProviderViewModel GetProviderViewModel(int id) {
+            var provider = GetProvider(id);
+            if (provider == null)
+            {
+                return null;
+            }
+            var vm = new ProviderViewModel(provider);
+            vm.Addresses = GetAddressesByProviderId(id);
+            
+            return vm;
         }
 
 

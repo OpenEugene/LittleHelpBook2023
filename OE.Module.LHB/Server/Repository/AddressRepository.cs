@@ -3,14 +3,27 @@ using System.Linq;
 using System.Collections.Generic;
 using Oqtane.Modules;
 using M = OE.Module.LHB.Shared.Models;
+using System.Security.Cryptography;
 
 namespace OE.Module.LHB.Repository {
     public partial class LHBRepository
     {
 
-        public M.Address GetAddressByProviderId(int providerId, bool tracking = false) {
-            var providerAddress = _db.ProviderAddress.FirstOrDefault(pa => pa.ProviderId == providerId);
-            return providerAddress != null ? GetAddress(providerAddress.AddressId, tracking) : null;
+        public List<M.Address> GetAddressesByProviderId(int providerId, bool tracking = false) {
+            // get a list of addresses for a provider
+            var addrs = from a in _db.Address
+                join pa in _db.ProviderAddress on a.AddressId equals pa.AddressId
+                where pa.ProviderId == providerId
+                select new M.Address
+                {
+                    AddressId = a.AddressId,
+                    Address1 = a.Address1,
+                    Address2 = a.Address2,
+                    City = a.City,
+                    State = a.State,
+                    PostalCode = a.PostalCode
+                };
+            return addrs.ToList();
         }
 
         public M.Address GetAddressByAddressId(int addressId) {
