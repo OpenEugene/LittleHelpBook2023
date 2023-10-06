@@ -16,11 +16,11 @@ namespace OE.Module.LHB.Controllers
     [Route(ControllerRoutes.ApiRoute)]
     public class ProviderController : ModuleControllerBase
     {
-        private readonly ProviderRepository _providerRepository;
+        private readonly LHBRepository _lhbRepository;
 
-        public ProviderController(ProviderRepository providerRepository, ILogManager logger, IHttpContextAccessor accessor) : base(logger, accessor)
+        public ProviderController(LHBRepository lhbRepository, ILogManager logger, IHttpContextAccessor accessor) : base(logger, accessor)
         {
-            _providerRepository = providerRepository;
+            _lhbRepository = lhbRepository;
         }
 
         // GET: api/<controller>?moduleid=x
@@ -28,7 +28,7 @@ namespace OE.Module.LHB.Controllers
         public IEnumerable<M.Provider> Get()
         {
             try { 
-                return _providerRepository.GetProviders();
+                return _lhbRepository.GetProviders();
             }
             catch (System.Exception ex)
             {
@@ -44,7 +44,7 @@ namespace OE.Module.LHB.Controllers
         [Authorize(Policy = PolicyNames.ViewModule)]
         public M.Provider Get(int id)
         {
-            M.Provider item = _providerRepository.GetProvider(id);
+            M.Provider item = _lhbRepository.GetProvider(id);
             return item;
         }
 
@@ -55,7 +55,7 @@ namespace OE.Module.LHB.Controllers
         {
             if (ModelState.IsValid )
             {
-                item = _providerRepository.AddProvider(item);
+                item = _lhbRepository.AddProvider(item);
                 _logger.Log(LogLevel.Information, this, LogFunction.Create, "Provider Added {item}", item);
             }
             else
@@ -71,9 +71,9 @@ namespace OE.Module.LHB.Controllers
         [Authorize(Policy = PolicyNames.EditModule)]
         public M.Provider Put(int id, [FromBody] M.Provider item)
         {
-            if (ModelState.IsValid && _providerRepository.GetProvider(item.ProviderId, false) != null)
+            if (ModelState.IsValid && _lhbRepository.GetProvider(item.ProviderId, false) != null)
             {
-                item = _providerRepository.UpdateProvider(item);
+                item = _lhbRepository.UpdateProvider(item);
                 _logger.Log(LogLevel.Information, this, LogFunction.Update, "Provider Updated {item}",item);
             }
             else
@@ -90,10 +90,10 @@ namespace OE.Module.LHB.Controllers
         [Authorize(Policy = PolicyNames.EditModule)]
         public void Delete(int id)
         {
-            M.Provider item = _providerRepository.GetProvider(id);
+            M.Provider item = _lhbRepository.GetProvider(id);
             if (item != null )
             {
-                _providerRepository.DeleteProvider(id);
+                _lhbRepository.DeleteProvider(id);
                 _logger.Log(LogLevel.Information, this, LogFunction.Delete, "Provider Deleted {id}", id);
             }
             else

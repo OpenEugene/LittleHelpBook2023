@@ -13,12 +13,12 @@ namespace OE.Module.LHB.Manager
 {
     public class LHBManager : MigratableModuleBase, IInstallable, IPortable
     {
-        private readonly ProviderRepository _providerRepository;
+        private readonly LHBRepository _lhbRepository;
         private readonly IDBContextDependencies _DBContextDependencies;
 
-        public LHBManager(ProviderRepository providerRepository, IDBContextDependencies DBContextDependencies)
+        public LHBManager(LHBRepository lhbRepository, IDBContextDependencies DBContextDependencies)
         {
-            _providerRepository = providerRepository;
+            _lhbRepository = lhbRepository;
             _DBContextDependencies = DBContextDependencies;
         }
 

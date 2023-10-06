@@ -5,12 +5,8 @@ using Oqtane.Modules;
 using M = OE.Module.LHB.Shared.Models;
 
 namespace OE.Module.LHB.Repository {
-    public class AddressRepository : ITransientService {
-        private readonly LHBContext _db;
-
-        public AddressRepository(LHBContext context) {
-            _db = context;
-        }
+    public partial class LHBRepository
+    {
 
         public M.Address GetAddressByProviderId(int providerId, bool tracking = false) {
             var providerAddress = _db.ProviderAddress.FirstOrDefault(pa => pa.ProviderId == providerId);

@@ -7,14 +7,8 @@ using M = OE.Module.LHB.Shared.Models;
 
 namespace OE.Module.LHB.Repository
 {
-    public class ProviderRepository :  ITransientService
+    public partial class LHBRepository
     {
-        private readonly LHBContext _db;
-
-        public ProviderRepository(LHBContext context)
-        {
-            _db = context;
-        }
 
         public IEnumerable<M.Provider> GetProviders()
         {
