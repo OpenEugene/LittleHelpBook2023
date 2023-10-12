@@ -47,6 +47,11 @@ namespace OE.Module.LHB.Services
             return await PutJsonAsync<M.Provider>($"{Apiurl}/{item.ProviderId}", item);
         }
 
+        public async Task<ProviderViewModel> UpdateProviderAsync(ProviderViewModel item)
+        {
+            return await PutJsonAsync<ProviderViewModel>($"{Apiurl}/vm/{item.ProviderId}", item);
+        }
+
         public async Task DeleteProviderAsync(int id)
         {
             await DeleteAsync($"{Apiurl}/{id}");

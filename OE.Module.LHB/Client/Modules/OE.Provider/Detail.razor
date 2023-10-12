@@ -1,5 +1,4 @@
 @using Microsoft.AspNetCore.Components.Forms
-
 @using Oqtane.Modules.Controls
 @using OE.Module.LHB.Services
 @using System.ComponentModel.DataAnnotations
@@ -10,55 +9,58 @@
 @inject NavigationManager NavigationManager
 @inject IStringLocalizer<Edit> Localizer
 
-<MudCard>
-    <MudCardHeader>
-        <MudText Typo="Typo.h6">@Localizer["Title"]</MudText>
-    </MudCardHeader>
-    <MudCardContent>
-        @if(_model!=null){
-            <MudTextField Label="@Localizer["Name"]" @bind-Value="_model.Name" />
-
+ @if(_model!=null){
+ <EditForm @ref="form" Model="@_model"
+    OnValidSubmit="OnValidSubmit"
+    OnInvalidSubmit="OnInvalidSubmit">
+    <MudCard>
+        <MudCardHeader>
+            <MudText Typo="Typo.h6">@Localizer["Title"]</MudText>
+        </MudCardHeader>
+        <MudCardContent>
+            <DataAnnotationsValidator />
+            <MudTextField Label="@Localizer["Name"]" @bind-Value="_model.Name" For="@(() => _model.Name)" />
             @foreach(M.Address addr in _model.Addresses)
             {
-                <MudCard>
-                    <MudCardContent>
-                        <MudTextField Label="@Localizer["Address"]" @bind-Value="addr.Address1"  />
-                        <MudTextField Label="@Localizer["City"]" @bind-Value="addr.City" />
-                        <MudTextField Label="@Localizer["State"]" @bind-Value="addr.State"  />
-                        <MudTextField Label="@Localizer["PostalCode"]" @bind-Value="addr.PostalCode"  />
-                    </MudCardContent>
-                    <MudCardActions>
-                        <MudButton Color="Color.Warning" OnClick="@(()=>Delete(addr))">@Localizer["Delete"]</MudButton>
-                    </MudCardActions>
-                </MudCard>
+            <MudCard>
+                <MudCardContent>
+                        <MudTextField Label="@Localizer["Address"]" @bind-Value="addr.Address1" For="@(() => addr.Address1)" />
+                        <MudTextField Label="@Localizer["City"]" @bind-Value="addr.City" For="@(() => addr.City)" />
+                        <MudTextField Label="@Localizer["State"]" @bind-Value="addr.State" For="@(() => addr.State)" />
+                        <MudTextField Label="@Localizer["PostalCode"]" @bind-Value="addr.PostalCode" For="@(() => addr.PostalCode)" />
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton Color="Color.Warning" OnClick="@(()=>Delete(addr))">@Localizer["Delete"]</MudButton>
+                </MudCardActions>
+            </MudCard>
             }
-        }
-        
-    </MudCardContent>
-    <MudCardActions>
-        <MudButton Color="Color.Secondary" OnClick="Back" >@Localizer["Back"]</MudButton>
-        <MudButton Color="Color.Primary" OnClick="Save">@Localizer["Save"]</MudButton>
-    </MudCardActions>
-</MudCard>
-
+            <ValidationSummary @ref="summary" />
+        </MudCardContent>
+        <MudCardActions>
+            <MudButton Color="Color.Secondary" OnClick="Back" >@Localizer["Back"]</MudButton>
+            <MudButton ButtonType="ButtonType.Submit" Color="Color.Primary">@Localizer["Save"]</MudButton>
+        </MudCardActions>
+    </MudCard>
+</EditForm>
+}
 @code {
-    MudForm form;
+    EditForm form;
+    ValidationSummary summary;
     //public override SecurityAccessLevel SecurityAccessLevel => SecurityAccessLevel.View;
-
     public override string Actions => "Detail";
-
     public override string Title => "Provider Details";
     private int _id;
     private ProviderViewModel _model;
+
+    bool success;
+    string[] errors = { };
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-
             _id = Int32.Parse(PageState.QueryString["id"]);
             _model = await ProviderService.GetProviderViewModelAsync(_id);
-
         }
         catch (Exception ex)
         {
@@ -78,16 +80,53 @@
 
     }
 
-    private void Save()
+    // private async Task Save()
+    // {
+    //     form.Validate();
+    //     if (form.IsValid)
+    //     {
+    //         try
+    //         {
+    //             await ProviderService.UpdateProviderAsync(_model);
+    //             AddModuleMessage(Localizer["Message.UpdateSuccess"], MessageType.Success);
+    //         }
+    //         catch (Exception ex)
+    //         {
+    //             logger.LogError(ex, "Error Saving LHB {id} {message}", _id, ex.Message);
+    //             AddModuleMessage(Localizer["Message.UpdateError"], MessageType.Error);
+    //         }
+    //     }
+    // }
+
+    private void OnValidSubmit(EditContext context)
     {
-      
+
+        if (context.Validate())
+        {
+            try
+            {
+                ProviderService.UpdateProviderAsync(_model);
+                AddModuleMessage(Localizer["Message.UpdateSuccess"], MessageType.Success);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error Saving LHB {id} {message}", _id, ex.Message);
+                AddModuleMessage(Localizer["Message.UpdateError"], MessageType.Error);
+            }
+            NavigationManager.NavigateTo(NavigateUrl());
+        }
+        
+    }
+
+    private void OnInvalidSubmit(EditContext context)
+    {
+        int foo = 0;    
     }
 
     private void Delete(M.Address addr)
     {
        // ask if they are sure
         // delete
-
     }
 
 }

@@ -6,6 +6,7 @@ using Oqtane.Modules;
 using M = OE.Module.LHB.Shared.Models;
 using OE.Module.LHB.Shared.ViewModels;
 using System.Security.Cryptography;
+using OE.Module.LHB.Shared.Models;
 
 namespace OE.Module.LHB.Repository
 {
@@ -47,11 +48,32 @@ namespace OE.Module.LHB.Repository
             return item;
         }
 
-        public M.Provider UpdateProvider(M.Provider providerId)
+        public M.Provider UpdateProvider(M.Provider provider)
         {
-            _db.Entry(providerId).State = EntityState.Modified;
+            _db.Entry(provider).State = EntityState.Modified;
             _db.SaveChanges();
-            return providerId;
+            return provider;
+        }
+        public ProviderViewModel UpdateProvider(ProviderViewModel providerVm)
+        {
+            // update provider
+            _db.Entry<M.Provider>(providerVm as Provider).State = EntityState.Modified;
+            foreach(var address in providerVm.Addresses)
+            {
+                if (address.AddressId == 0)
+                {
+                    // add new address
+                    _db.Address.Add(address);
+                }
+                else
+                {
+                    // update existing address
+                    _db.Entry<M.Address>(address).State = EntityState.Modified;
+                }
+            }
+            _db.SaveChanges();
+
+            return providerVm;
         }
 
         public void DeleteProvider(int providerId)

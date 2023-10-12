@@ -99,6 +99,25 @@ namespace OE.Module.LHB.Controllers
             return item;
         }
 
+        // PUT api/<controller>/5
+        [HttpPut("vm/{id}")]
+        [Authorize(Policy = PolicyNames.EditModule)]
+        public ProviderViewModel PutVm(int id, [FromBody] ProviderViewModel item)
+        {
+            if (ModelState.IsValid)
+            {
+                item = _lhbRepository.UpdateProvider(item);
+                _logger.Log(LogLevel.Information, this, LogFunction.Update, "Provider Updated {item}", item);
+            }
+            else
+            {
+                _logger.Log(LogLevel.Error, this, LogFunction.Security, "Bad Provider Put Attempt {item}", item);
+                HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                item = null;
+            }
+            return item;
+        }
+
         // DELETE api/<controller>/5
         [HttpDelete("{id}")]
         [Authorize(Policy = PolicyNames.EditModule)]

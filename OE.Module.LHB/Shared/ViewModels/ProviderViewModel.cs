@@ -11,6 +11,7 @@ namespace OE.Module.LHB.Shared.ViewModels {
         public ProviderViewModel(Provider provider) { 
             ProviderId = provider.ProviderId;
             Name = provider.Name;
+            Description = provider.Description;
             WebAddress = provider.WebAddress;
             EmailAddress = provider.EmailAddress;
             HoursOfOperation = provider.HoursOfOperation;
