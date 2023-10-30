@@ -34,9 +34,11 @@ namespace OE.Module.LHB.Repository
             {
                 return null;
             }
-            var vm = new ProviderViewModel(provider);
-            vm.Addresses = GetAddressesByProviderId(id);
-            
+            var vm = new ProviderViewModel(provider) {
+                Addresses = GetAddressesByProviderId(id),
+                PhoneNumbers = GetPhoneNumbersByProviderId(id)
+            };
+
             return vm;
         }
 
@@ -58,12 +60,16 @@ namespace OE.Module.LHB.Repository
         {
             // update provider
             _db.Entry<M.Provider>(providerVm as Provider).State = EntityState.Modified;
+
+            //addresses
             foreach(var address in providerVm.Addresses)
             {
                 if (address.AddressId == 0)
                 {
                     // add new address
                     _db.Address.Add(address);
+
+                    //I think we need to add a new ProviderAddress row too.
                 }
                 else
                 {
@@ -71,6 +77,21 @@ namespace OE.Module.LHB.Repository
                     _db.Entry<M.Address>(address).State = EntityState.Modified;
                 }
             }
+            //phones
+            foreach (var phone in providerVm.PhoneNumbers) {
+                if (phone.PhoneNumberId == 0) {
+                    // add new address
+                    _db.PhoneNumber.Add(phone);
+
+                    //I think we need to add a new ProviderPhone row too.
+                    
+                }
+                else {
+                    // update existing address
+                    _db.Entry<M.PhoneNumber>(phone).State = EntityState.Modified;
+                }
+            }
+
             _db.SaveChanges();
 
             return providerVm;
