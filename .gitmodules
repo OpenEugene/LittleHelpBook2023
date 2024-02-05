@@ -2,4 +2,4 @@
 	path = oqtane.framework
 	url = https://github.com/openeugene/oqtane.framework
 	branch = release/v5.0.1
-	ignore = dirty
+	ignore = all
