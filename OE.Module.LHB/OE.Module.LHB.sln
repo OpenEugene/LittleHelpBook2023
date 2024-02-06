@@ -28,6 +28,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{2B99A7AD-5
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "OE.Data.LHB", "OE.Data.LHB\OE.Data.LHB.sqlproj", "{BC025FA7-0025-4DDB-93F6-C97B4D91833B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0068B489-9BFF-4492-A4A1-0CFB0222E459}"
+	ProjectSection(SolutionItems) = preProject
+		..\.gitmodules = ..\.gitmodules
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
