@@ -1,0 +1,28 @@
+﻿@inherits ModuleControlBase
+@inject IStringLocalizer<OE.Provider.Edit> Localizer
+@namespace OE.Module.LHB.Client.Controls
+
+@if (Addr != null)
+{
+    <MudCard>
+        <MudCardContent>
+            <MudTextField Label="@Localizer["Address"]" @bind-Value="Addr.Address1" For="@(() => Addr.Address1)" />
+            <MudTextField Label="@Localizer["City"]" @bind-Value="Addr.City" For="@(() => Addr.City)" />
+            <MudTextField Label="@Localizer["State"]" @bind-Value="Addr.State" For="@(() => Addr.State)" />
+            <MudTextField Label="@Localizer["PostalCode"]" @bind-Value="Addr.PostalCode" For="@(() => Addr.PostalCode)" />
+        </MudCardContent>
+        <MudCardActions>
+            <MudButton Color="Color.Warning" OnClick="@(()=> DeleteAddr(Addr))">@Localizer["Delete"]</MudButton>
+        </MudCardActions>
+    </MudCard>
+}
+@code {
+    [Parameter] public M.Address Addr { get; set; }
+    [Parameter] public EventCallback<M.Address> OnDelete { get; set; }
+
+    private async Task DeleteAddr(M.Address addr)
+    {
+        await OnDelete.InvokeAsync(addr);
+    }
+
+}

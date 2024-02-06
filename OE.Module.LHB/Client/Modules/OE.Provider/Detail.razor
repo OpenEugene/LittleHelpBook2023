@@ -29,17 +29,7 @@
             }
             @foreach(M.Address addr in _model.Addresses)
             {
-            <MudCard>
-                <MudCardContent>
-                        <MudTextField Label="@Localizer["Address"]" @bind-Value="addr.Address1" For="@(() => addr.Address1)" />
-                        <MudTextField Label="@Localizer["City"]" @bind-Value="addr.City" For="@(() => addr.City)" />
-                        <MudTextField Label="@Localizer["State"]" @bind-Value="addr.State" For="@(() => addr.State)" />
-                        <MudTextField Label="@Localizer["PostalCode"]" @bind-Value="addr.PostalCode" For="@(() => addr.PostalCode)" />
-                </MudCardContent>
-                <MudCardActions>
-                    <MudButton Color="Color.Warning" OnClick="@(()=> DeleteAddr(addr))">@Localizer["Delete"]</MudButton>
-                </MudCardActions>
-            </MudCard>
+                <Controls.Address Addr="@addr"/>  
             }
             @if(_model.PhoneNumbers.Any()){
                     <MudField Label="Phone Number(s)"  />
@@ -72,6 +62,7 @@
     //public override SecurityAccessLevel SecurityAccessLevel => SecurityAccessLevel.View;
     public override string Actions => "Detail";
     public override string Title => "Provider Details";
+    public override bool UseAdminContainer => false;
     private int _id;
     private ProviderViewModel _model;
 
