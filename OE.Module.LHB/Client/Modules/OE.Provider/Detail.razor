@@ -2,6 +2,7 @@
 @using Oqtane.Modules.Controls
 @using OE.Module.LHB.Services
 @using System.ComponentModel.DataAnnotations
+@using OE.Module.LHB.Client.Controls
 
 @namespace OE.Provider
 @inherits ModuleBase
@@ -29,7 +30,7 @@
             }
             @foreach(M.Address addr in _model.Addresses)
             {
-                <Controls.Address Addr="@addr"/>  
+                <Address Addr="@addr"></Address>  
             }
             @if(_model.PhoneNumbers.Any()){
                     <MudField Label="Phone Number(s)"  />
