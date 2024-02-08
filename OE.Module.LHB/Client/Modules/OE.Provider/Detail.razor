@@ -3,6 +3,7 @@
 @using OE.Module.LHB.Services
 @inherits ModuleBase
 @inject ProviderService ProviderService
+@inject AddressService AddressService
 @inject NavigationManager NavigationManager
 @inject IStringLocalizer<Edit> Localizer
 
@@ -22,12 +23,14 @@
                 <MudTextField Label="@Localizer["WebAddress"]" @bind-Value="_model.WebAddress" For="@(() => _model.WebAddress)"/>
                 <MudTextField Label="@Localizer["EmailAddress"]" @bind-Value="_model.EmailAddress" For="@(() => _model.EmailAddress)"/>
                 <MudTextField Label="@Localizer["HoursOfOperation"]" @bind-Value="_model.HoursOfOperation" For="@(() => _model.HoursOfOperation)"/>
-                @if (_model.Addresses.Any())
+                <MudField Label="Address(es)"/>
+                 <MudButton Color="Color.Default" OnClick="@(()=> AddAddr())">@Localizer["Add"]</MudButton>
+      
+                @if (_model.Addresses.Any() )
                 {
-                    <MudField Label="Address(es)"/>
                     @foreach (var addr in _model.Addresses)
                     {
-                        <Address Addr="@addr" OnDelete="DeleteAddr" OnAdd="AddAddr"></Address>
+                        <Address Addr="@addr" OnDelete="DeleteAddr"></Address>
                     }
                 }
 
@@ -142,14 +145,15 @@
 
     private void DeleteAddr(M.Address addr)
     {
-        // ask if they are sure
-        // delete
+        AddressService.DeleteAddressAsync(addr.AddressId);
     }
 
-    private void AddAddr()
+      private void AddAddr()
     {
-        var foo = _model.ProviderId;
+        var url = EditUrl("AddAddress", $"id={_id}");
+        NavigationManager.NavigateTo(url);
     }
+
 
     private void DeletePhone(M.PhoneNumber phone)
     {
@@ -157,4 +161,5 @@
         // delete
     }
 
+  
 }
