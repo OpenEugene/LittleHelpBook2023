@@ -12,17 +12,23 @@
             <MudTextField Label="@Localizer["PostalCode"]" @bind-Value="Addr.PostalCode" For="@(() => Addr.PostalCode)" />
         </MudCardContent>
         <MudCardActions>
-            <MudButton Color="Color.Warning" OnClick="@(()=> DeleteAddr(Addr))">@Localizer["Delete"]</MudButton>
+            <MudButton Color="Color.Default" OnClick="@(()=> AddAddr())">@Localizer["Add"]</MudButton>
+            <MudButton Color="Color.Warning" OnClick="@(() => DeleteAddr(Addr))">@Localizer["Delete"]</MudButton>
         </MudCardActions>
     </MudCard>
 }
 @code {
     [Parameter] public M.Address Addr { get; set; }
     [Parameter] public EventCallback<M.Address> OnDelete { get; set; }
+    [Parameter] public EventCallback OnAdd { get; set; }
 
     private async Task DeleteAddr(M.Address addr)
     {
         await OnDelete.InvokeAsync(addr);
     }
 
+    private async Task AddAddr()
+    {
+        await OnAdd.InvokeAsync();
+    }
 }

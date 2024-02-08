@@ -1,65 +1,69 @@
-@using Microsoft.AspNetCore.Components.Forms
-@using Oqtane.Modules.Controls
-@using OE.Module.LHB.Services
-@using System.ComponentModel.DataAnnotations
-@using OE.Module.LHB.Client.Controls
-
 @namespace OE.Provider
+@using Microsoft.AspNetCore.Components.Forms
+@using OE.Module.LHB.Services
 @inherits ModuleBase
 @inject ProviderService ProviderService
 @inject NavigationManager NavigationManager
 @inject IStringLocalizer<Edit> Localizer
 
- @if(_model!=null){
- <EditForm @ref="form" Model="@_model"
-    OnValidSubmit="OnValidSubmit"
-    OnInvalidSubmit="OnInvalidSubmit">
-    <MudCard>
-        <MudCardHeader>
-            <MudText Typo="Typo.h6">@Localizer["Title"]</MudText>
-        </MudCardHeader>
-        <MudCardContent>
-            <DataAnnotationsValidator />
-            <MudTextField Label="@Localizer["Name"]" @bind-Value="_model.Name" For="@(() => _model.Name)" />
-                <MudTextField Label="@Localizer["Description"]" @bind-Value="_model.Description" For="@(() => _model.Description)" />
-                <MudTextField Label="@Localizer["WebAddress"]" @bind-Value="_model.WebAddress" For="@(() => _model.WebAddress)" />
-                <MudTextField Label="@Localizer["EmailAddress"]" @bind-Value="_model.EmailAddress" For="@(() => _model.EmailAddress)" />
-                <MudTextField Label="@Localizer["HoursOfOperation"]" @bind-Value="_model.HoursOfOperation" For="@(() => _model.HoursOfOperation)" />
-            @if (_model.Addresses.Any()) {
-                <MudField Label="Address(es)"/>
-            }
-            @foreach(M.Address addr in _model.Addresses)
-            {
-                <Address Addr="@addr"></Address>  
-            }
-            @if(_model.PhoneNumbers.Any()){
-                    <MudField Label="Phone Number(s)"  />
+@if (_model != null)
+{
+    <EditForm @ref="form" Model="@_model"
+              OnValidSubmit="OnValidSubmit"
+              OnInvalidSubmit="OnInvalidSubmit">
+        <MudCard>
+            <MudCardHeader>
+                <MudText Typo="Typo.h6">@Localizer["Title"]</MudText>
+            </MudCardHeader>
+            <MudCardContent>
+                <DataAnnotationsValidator/>
+                <MudTextField Label="@Localizer["Name"]" @bind-Value="_model.Name" For="@(() => _model.Name)"/>
+                <MudTextField Label="@Localizer["Description"]" @bind-Value="_model.Description" For="@(() => _model.Description)"/>
+                <MudTextField Label="@Localizer["WebAddress"]" @bind-Value="_model.WebAddress" For="@(() => _model.WebAddress)"/>
+                <MudTextField Label="@Localizer["EmailAddress"]" @bind-Value="_model.EmailAddress" For="@(() => _model.EmailAddress)"/>
+                <MudTextField Label="@Localizer["HoursOfOperation"]" @bind-Value="_model.HoursOfOperation" For="@(() => _model.HoursOfOperation)"/>
+                @if (_model.Addresses.Any())
+                {
+                    <MudField Label="Address(es)"/>
+                    @foreach (var addr in _model.Addresses)
+                    {
+                        <Address Addr="@addr" OnDelete="DeleteAddr" OnAdd="AddAddr"></Address>
+                    }
                 }
-            @foreach (M.PhoneNumber phone in _model.PhoneNumbers) {
-                <MudCard>
-                    <MudCardContent>
-                        <MudTextField Label="@Localizer["AreaCode"]" @bind-Value="phone.AreaCode" For="@(() => phone.AreaCode)"/>
-                            <MudTextField Label="@Localizer["Number"]" @bind-Value="phone.Number" For="@(() => phone.Number)" />
-                        <MudTextField Label="@Localizer["Extension"]" @bind-Value="phone.Extension" For="@(() => phone.Extension)"/>
-                            <MudTextField Label="@Localizer["Description"]" @bind-Value="phone.Description" For="@(() => phone.Description)" />
-                    </MudCardContent>
-                    <MudCardActions>
-                            <MudButton Color="Color.Warning" OnClick="@(() => DeletePhone(phone))">@Localizer["Delete"]</MudButton>
-                    </MudCardActions>
-                </MudCard>
-            }
-            <ValidationSummary @ref="summary" />
-        </MudCardContent>
-        <MudCardActions>
-            <MudButton Color="Color.Secondary" OnClick="Back" >@Localizer["Back"]</MudButton>
-            <MudButton ButtonType="ButtonType.Submit" Color="Color.Primary">@Localizer["Save"]</MudButton>
-        </MudCardActions>
-    </MudCard>
-</EditForm>
+
+                @if (_model.PhoneNumbers.Any())
+                {
+                    <MudField Label="Phone Number(s)"/>
+                    @foreach (var phone in _model.PhoneNumbers)
+                    {
+                        <MudCard>
+                            <MudCardContent>
+                                <MudTextField Label="@Localizer["AreaCode"]" @bind-Value="phone.AreaCode" For="@(() => phone.AreaCode)"/>
+                                <MudTextField Label="@Localizer["Number"]" @bind-Value="phone.Number" For="@(() => phone.Number)"/>
+                                <MudTextField Label="@Localizer["Extension"]" @bind-Value="phone.Extension" For="@(() => phone.Extension)"/>
+                                <MudTextField Label="@Localizer["Description"]" @bind-Value="phone.Description" For="@(() => phone.Description)"/>
+                            </MudCardContent>
+                            <MudCardActions>
+                                <MudButton Color="Color.Warning" OnClick="@(() => DeletePhone(phone))">@Localizer["Delete"]</MudButton>
+                            </MudCardActions>
+                        </MudCard>
+                    }
+                }
+                <ValidationSummary @ref="summary"/>
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton Color="Color.Secondary" OnClick="Back">@Localizer["Back"]</MudButton>
+                <MudButton ButtonType="ButtonType.Submit" Color="Color.Primary">@Localizer["Save"]</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </EditForm>
 }
+
 @code {
     EditForm form;
+
     ValidationSummary summary;
+
     //public override SecurityAccessLevel SecurityAccessLevel => SecurityAccessLevel.View;
     public override string Actions => "Detail";
     public override string Title => "Provider Details";
@@ -74,7 +78,7 @@
     {
         try
         {
-            _id = Int32.Parse(PageState.QueryString["id"]);
+            _id = int.Parse(PageState.QueryString["id"]);
             _model = await ProviderService.GetProviderViewModelAsync(_id);
         }
         catch (Exception ex)
@@ -92,7 +96,6 @@
     private void Back()
     {
         NavigationManager.NavigateTo(NavigateUrl());
-
     }
 
     // private async Task Save()
@@ -115,7 +118,6 @@
 
     private void OnValidSubmit(EditContext context)
     {
-
         if (context.Validate())
         {
             try
@@ -128,25 +130,31 @@
                 logger.LogError(ex, "Error Saving LHB {id} {message}", _id, ex.Message);
                 AddModuleMessage(Localizer["Message.UpdateError"], MessageType.Error);
             }
+
             NavigationManager.NavigateTo(NavigateUrl());
         }
-        
     }
 
     private void OnInvalidSubmit(EditContext context)
     {
-        int foo = 0;    
+        var foo = 0;
     }
 
     private void DeleteAddr(M.Address addr)
     {
-       // ask if they are sure
+        // ask if they are sure
         // delete
     }
 
-    private void DeletePhone(M.PhoneNumber phone) {
-    // ask if they are sure
-    // delete
+    private void AddAddr()
+    {
+        var foo = _model.ProviderId;
+    }
+
+    private void DeletePhone(M.PhoneNumber phone)
+    {
+        // ask if they are sure
+        // delete
     }
 
 }
