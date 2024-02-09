@@ -10,6 +10,7 @@
             <MudTextField Label="@Localizer["City"]" @bind-Value="Addr.City" For="@(() => Addr.City)" />
             <MudTextField Label="@Localizer["State"]" @bind-Value="Addr.State" For="@(() => Addr.State)" />
             <MudTextField Label="@Localizer["PostalCode"]" @bind-Value="Addr.PostalCode" For="@(() => Addr.PostalCode)" />
+            <MudCheckBox Label="@Localizer["Is Active"]" @bind-Value="Addr.IsActive" />
         </MudCardContent>
         <MudCardActions>
 

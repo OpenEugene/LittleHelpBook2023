@@ -20,6 +20,7 @@ namespace OE.Module.LHB.Services
         public async Task<M.Address> AddAddressAsync(M.Address item)
         {
             return await PostJsonAsync<M.Address>($"{Apiurl}", item);
+            
         }
 
         public async Task DeleteAddressAsync(int id)

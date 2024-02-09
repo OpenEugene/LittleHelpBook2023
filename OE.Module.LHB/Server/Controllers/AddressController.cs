@@ -11,6 +11,7 @@ using System.Net;
 
 using M = OE.Module.LHB.Shared.Models;
 using OE.Module.LHB.Shared.ViewModels;
+using Oqtane.Models;
 
 namespace OE.Module.LHB.Controllers
 {
@@ -24,8 +25,6 @@ namespace OE.Module.LHB.Controllers
             _lhbRepository = lhbRepository;
         }
 
-
-
         // POST api/<controller>
         [HttpPost]
         public M.Address Post([FromBody] M.Address item)
@@ -38,6 +37,7 @@ namespace OE.Module.LHB.Controllers
             else
             {
                 HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                
                 item = null;
             }
             return item;

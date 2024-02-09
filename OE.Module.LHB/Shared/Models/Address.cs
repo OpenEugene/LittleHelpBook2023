@@ -43,7 +43,7 @@ public partial class Address
     public float? Latitude { get; set; }
 
     [Required]
-    public bool? IsActive { get; set; }
+    public bool IsActive { get; set; }
 
     [Required]
     [StringLength(256)]

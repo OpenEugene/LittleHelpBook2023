@@ -1,17 +1,15 @@
-@using Microsoft.AspNetCore.Components.Forms
-@using Oqtane.Modules.Controls
 @using OE.Module.LHB.Services
-@using System.ComponentModel.DataAnnotations
+@using System.Security.Claims
 
 @namespace OE.Provider
 @inherits ModuleBase
-@inject ProviderService ProviderService
 @inject AddressService AddressService
 @inject NavigationManager NavigationManager
 @inject IStringLocalizer<Index> Localizer
+@inject AuthenticationStateProvider GetAuthenticationStateAsync
 
 <Address Addr="@addr"></Address>
-<MudButton Color="Color.Primary" OnClick="@(()=> AddAddr())">@Localizer["Add"]</MudButton>
+<MudButton Color="Color.Primary" OnClick="@(()=> AddAddr())">@Localizer["Save"]</MudButton>
 <MudButton Color="Color.Secondary" OnClick="@(()=> Back())">@Localizer["Cancel"]</MudButton>
 
 
@@ -27,10 +25,13 @@
 
     bool success;
     string[] errors = { };
+    ClaimsPrincipal user;
 
     protected override async Task OnInitializedAsync()
     {
         _id = int.Parse(PageState.QueryString["id"]);
+        var authstate = await GetAuthenticationStateAsync.GetAuthenticationStateAsync();
+        user = authstate.User;
     }
 
     private void Back()
@@ -39,8 +40,23 @@
         NavigationManager.NavigateTo(url);
     }
 
-    private void AddAddr()
+    private async Task AddAddr()
     {
-        AddressService.AddAddressAsync(addr);
+        //Do we need to manually do it, or can EF Magically figure this out?
+        //If not, let's extract this out somehow (IAuditable interface for the Model?)
+    
+        //See https://stackoverflow.com/a/66867028
+
+        var userName = user.Identity.Name;
+        addr.CreatedBy = userName;
+        addr.ModifiedBy = userName;
+        addr.CreatedOn=DateTime.Now;
+        addr.ModifiedOn=DateTime.Now;
+        
+        await AddressService.AddAddressAsync(addr);
+
+
+        var url = EditUrl("Detail", $"id={_id}");
+        NavigationManager.NavigateTo(url);
     }
 }
