@@ -56,5 +56,10 @@ namespace OE.Module.LHB.Services
         {
             await DeleteAsync($"{Apiurl}/{id}");
         }
+
+        public async Task DeleteAttributeAsync(int id)
+        {
+            await DeleteAsync($"{Apiurl}/{id}");
+        }
     }
 }

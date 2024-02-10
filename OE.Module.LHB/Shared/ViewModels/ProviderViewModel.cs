@@ -4,9 +4,9 @@ using OE.Module.LHB.Shared.Models;
 
 namespace OE.Module.LHB.Shared.ViewModels {
     public class ProviderViewModel : Provider {
-        public List<Address> Addresses { get;set; } = new List<Address>();
-        public List<PhoneNumber> PhoneNumbers { get;set; }=  new List<PhoneNumber>();
-        public List<ProviderAttribute> ProviderAttributes { get; set; } = new List<ProviderAttribute>();
+        public List<Address> Addresses { get;set; } = new();
+        public List<PhoneNumber> PhoneNumbers { get;set; }=  new();
+        public List<ProviderAttributeViewModel> ProviderAttributes { get; set; } = new();
         public ProviderViewModel() { }
         public ProviderViewModel(Provider provider) { 
             ProviderId = provider.ProviderId;
