@@ -12,8 +12,7 @@ namespace OE.Module.LHB.Repository {
         public List<M.Address> GetAddressesByProviderId(int providerId, bool tracking = false) {
             // get a list of addresses for a provider
             var addrs = from a in _db.Address
-                        join pa in _db.ProviderAddress on a.AddressId equals pa.AddressId
-                        where pa.ProviderId == providerId
+                        where a.ProviderId == providerId
                         select a;
             return addrs.ToList();
         }

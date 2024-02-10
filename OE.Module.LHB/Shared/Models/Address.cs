@@ -14,6 +14,8 @@ public partial class Address
     [Key]
     public int AddressId { get; set; }
 
+    public int ProviderId { get; set; }
+
     [StringLength(120)]
     public string Address1 { get; set; }
 
@@ -43,7 +45,7 @@ public partial class Address
     public float? Latitude { get; set; }
 
     [Required]
-    public bool? IsActive { get; set; }
+    public bool IsActive { get; set; }
 
     [Required]
     [StringLength(256)]
