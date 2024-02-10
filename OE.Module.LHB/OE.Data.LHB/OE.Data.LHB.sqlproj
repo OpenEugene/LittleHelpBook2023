@@ -67,7 +67,6 @@
     <Build Include="dbo\Tables\ProviderPhoneNumber.sql" />
     <Build Include="dbo\Tables\Attribute.sql" />
     <Build Include="dbo\Tables\ProviderAttribute.sql" />
-    <Build Include="dbo\Tables\ProviderAddress.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SqlSchemaCompare.scmp" />

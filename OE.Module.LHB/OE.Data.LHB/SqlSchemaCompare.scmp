@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <SchemaComparison>
   <Version>10</Version>
   <SourceModelProvider>
@@ -1252,5 +1252,15 @@
       <Name>dbo</Name>
       <Name>SubCategoryView</Name>
     </SelectedItem>
+    <SelectedItem Type="Microsoft.Data.Tools.Schema.Sql.SchemaModel.SqlTable, Microsoft.Data.Tools.Schema.Sql, Version=162.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <Name>dbo</Name>
+      <Name>Address</Name>
+    </SelectedItem>
   </ExcludedSourceElements>
+  <ExcludedTargetElements>
+    <SelectedItem Type="Microsoft.Data.Tools.Schema.Sql.SchemaModel.SqlTable, Microsoft.Data.Tools.Schema.Sql, Version=162.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <Name>dbo</Name>
+      <Name>Address</Name>
+    </SelectedItem>
+  </ExcludedTargetElements>
 </SchemaComparison>

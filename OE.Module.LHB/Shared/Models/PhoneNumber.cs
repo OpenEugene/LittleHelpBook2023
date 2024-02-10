@@ -13,6 +13,7 @@ public partial class PhoneNumber
 {
     [Key]
     public int PhoneNumberId { get; set; }
+    public int ProviderId { get; set; }
 
     public int? CountryCode { get; set; }
 

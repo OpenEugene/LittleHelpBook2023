@@ -10,8 +10,7 @@ namespace OE.Module.LHB.Repository {
         public List<M.PhoneNumber> GetPhoneNumbersByProviderId(int providerId, bool tracking = false) {
             // get a list of Phones for a provider
             var nums = from p in _db.PhoneNumber
-                        join pn in _db.ProviderPhoneNumber on p.PhoneNumberId equals pn.PhoneNumberId
-                        where pn.ProviderId == providerId
+                        where p.ProviderId == providerId
                         select p;
             return nums.ToList();
         }
