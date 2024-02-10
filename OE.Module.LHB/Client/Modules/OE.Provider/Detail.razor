@@ -24,7 +24,7 @@
                 <MudTextField Label="@Localizer["EmailAddress"]" @bind-Value="_model.EmailAddress" For="@(() => _model.EmailAddress)"/>
                 <MudTextField Label="@Localizer["HoursOfOperation"]" @bind-Value="_model.HoursOfOperation" For="@(() => _model.HoursOfOperation)"/>
                 <MudField Label="Address(es)"/>
-                 <MudButton Color="Color.Default" OnClick="@(()=> AddAddr())">@Localizer["Add"]</MudButton>
+                 <MudButton Color="Color.Surface" OnClick="@(()=> AddAddr())">@Localizer["Add"]</MudButton>
       
                 @if (_model.Addresses.Any() )
                 {

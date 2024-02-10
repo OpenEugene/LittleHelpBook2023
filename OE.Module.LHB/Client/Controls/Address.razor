@@ -1,5 +1,6 @@
 ﻿@inherits ModuleControlBase
 @inject IStringLocalizer<OE.Provider.Edit> Localizer
+@inject NavigationManager NavigationManager
 @namespace OE.Module.LHB.Client.Controls
 
 @if (Addr != null)
@@ -10,7 +11,10 @@
             <MudTextField Label="@Localizer["City"]" @bind-Value="Addr.City" For="@(() => Addr.City)" />
             <MudTextField Label="@Localizer["State"]" @bind-Value="Addr.State" For="@(() => Addr.State)" />
             <MudTextField Label="@Localizer["PostalCode"]" @bind-Value="Addr.PostalCode" For="@(() => Addr.PostalCode)" />
-            <MudCheckBox Label="@Localizer["Is Active"]" @bind-Value="Addr.IsActive" />
+            <MudSelect  @bind-Value="@Addr.IsActive" Label="Is Active">
+                <MudSelectItem Value="@(false)">False</MudSelectItem>
+                <MudSelectItem Value="@(true)">True</MudSelectItem>
+            </MudSelect>
         </MudCardContent>
         <MudCardActions>
 
@@ -24,10 +28,14 @@
 @code {
     [Parameter] public M.Address Addr { get; set; }
     [Parameter] public EventCallback<M.Address> OnDelete { get; set; }
-  
+
+    public bool thisFuckingValue { get => Addr.IsActive; set => Addr.IsActive = value; }
+
     private async Task DeleteAddr(M.Address addr)
     {
         await OnDelete.InvokeAsync(addr);
+        var url = EditUrl("Detail", $"id={Addr.ProviderId}");
+        NavigationManager.NavigateTo(url);
     }
 
    
