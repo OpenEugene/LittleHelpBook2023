@@ -14,6 +14,8 @@ public partial class Address
     [Key]
     public int AddressId { get; set; }
 
+    public int ProviderId { get; set; }
+
     [StringLength(120)]
     public string Address1 { get; set; }
 
