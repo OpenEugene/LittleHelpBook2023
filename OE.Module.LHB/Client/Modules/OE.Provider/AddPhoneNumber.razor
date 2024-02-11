@@ -2,23 +2,21 @@
 
 @namespace OE.Provider
 @inherits ModuleBase
-@inject AddressService AddressService
+@inject PhoneNumberService PhoneNumberService
 @inject NavigationManager NavigationManager
 @inject IStringLocalizer<Index> Localizer
 
-<Address Addr="@addr"></Address>
-<MudButton Color="Color.Primary" OnClick="@(()=> AddAddr())">@Localizer["Save"]</MudButton>
+<PhoneNumber Phone="@_phone"></PhoneNumber>
+<MudButton Color="Color.Primary" OnClick="@(()=> AddPhone())">@Localizer["Save"]</MudButton>
 <MudButton Color="Color.Secondary" OnClick="@(()=> Back())">@Localizer["Cancel"]</MudButton>
 
 
 @code {
-    MudForm form;
-
-    public override string Actions => "AddAddress";
+    public override string Actions => "AddPhone";
     public override bool UseAdminContainer => true;  //popup
-    public override string Title => "Manage Address";
+    public override string Title => "Manage PhoneNumber";
     private int _id;
-    private readonly M.Address addr = new();
+    private readonly M.PhoneNumber _phone = new();
     
     protected override async Task OnInitializedAsync()
     {
@@ -31,10 +29,10 @@
         NavigationManager.NavigateTo(url);
     }
 
-    private async Task AddAddr()
+    private async Task AddPhone()
     {
-        addr.ProviderId = _id;  // this is great!!!
-        var returnAddy = await AddressService.AddAddressAsync(addr);
+        _phone.ProviderId = _id;
+        var returnPhoneNumber = await PhoneNumberService.AddPhoneNumberAsync(_phone);
         
         var url = EditUrl("Detail", $"id={_id}");
         NavigationManager.NavigateTo(url,true);

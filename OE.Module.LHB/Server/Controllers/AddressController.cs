@@ -47,7 +47,7 @@ namespace OE.Module.LHB.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            M.Address item = _lhbRepository.GetAddressByAddressId(id);
+            var item = _lhbRepository.GetAddressByAddressId(id);
             if (item != null )
             {
                 _lhbRepository.DeleteAddress(id);
