@@ -8,6 +8,8 @@
 @inject NavigationManager NavigationManager
 @inject IStringLocalizer<Edit> Localizer
 
+@inject IJSRuntime JsRuntime //Used for confirmation dialog
+
 @if (_model != null)
 {
     <EditForm @ref="form" Model="@_model"
@@ -25,11 +27,11 @@
                 <MudTextField Label="@Localizer["EmailAddress"]" @bind-Value="_model.EmailAddress" For="@(() => _model.EmailAddress)"/>
                 <MudTextField Label="@Localizer["HoursOfOperation"]" @bind-Value="_model.HoursOfOperation" For="@(() => _model.HoursOfOperation)"/>
                 <MudField Label="Address(es)"/>
-                 <MudButton Color="Color.Primary" OnClick="@(()=> AddAddr())">@Localizer["Add Address"]</MudButton>
-      
-                @if (_model.Addresses.Any() )
+                <MudButton Color="Color.Primary" OnClick="@(()=> AddAddr())">@Localizer["Add Address"]</MudButton>
+                
+                @if (_orderedAddresses.Any())
                 {
-                    @foreach (var addr in _model.Addresses)
+                    @foreach (var addr in _orderedAddresses)
                     {
                         <Address Addr="@addr" OnDelete="DeleteAddr"></Address>
                     }
@@ -37,14 +39,14 @@
                 <MudField Label="Phone Number(s)"/>
                 <MudButton Color="Color.Primary" OnClick="@(()=> AddPhone())">@Localizer["Add Phone Number"]</MudButton>
 
-                @if (_model.PhoneNumbers.Any())
+                @if (_orderedPhoneNumbers.Any())
                 {
-                   
-                    @foreach (var phone in _model.PhoneNumbers)
+                    @foreach (var phone in _orderedPhoneNumbers )
                     {
                         <PhoneNumber Phone="@phone" OnDelete="DeletePhoneNumber"></PhoneNumber>
                     }
                 }
+
                 <ValidationSummary @ref="summary"/>
             </MudCardContent>
             <MudCardActions>
@@ -55,20 +57,18 @@
     </EditForm>
 }
 
-@code {
+@code {    
     EditForm form;
 
-    ValidationSummary summary;
-
-    //public override SecurityAccessLevel SecurityAccessLevel => SecurityAccessLevel.View;
+   ValidationSummary summary;
     public override string Actions => "Detail";
     public override string Title => "Provider Details";
     public override bool UseAdminContainer => false;
     private int _id;
     private ProviderViewModel _model;
 
-    bool success;
-    string[] errors = { };
+    private List<M.PhoneNumber> _orderedPhoneNumbers;
+    private List<M.Address> _orderedAddresses;
 
     protected override async Task OnInitializedAsync()
     {
@@ -76,6 +76,8 @@
         {
             _id = int.Parse(PageState.QueryString["id"]);
             _model = await ProviderService.GetProviderViewModelAsync(_id);
+            _orderedPhoneNumbers = _model.PhoneNumbers.OrderByDescending(p => p.IsActive).ToList();
+            _orderedAddresses = _model.Addresses.OrderByDescending(a => a.IsActive).ToList();
         }
         catch (Exception ex)
         {
@@ -121,8 +123,12 @@
     private async Task DeleteAddr(M.Address addr)
     {
         // ask if they are sure
-        await AddressService.DeleteAddressAsync(addr.AddressId);
-        NavigationManager.NavigateTo(NavigationManager.Uri);
+        var confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to remove this address?");
+        if (confirmed)
+        {
+            await AddressService.DeleteAddressAsync(addr.AddressId);
+            NavigationManager.NavigateTo(NavigationManager.Uri);
+        }
     }
 
     private void AddAddr()
@@ -139,8 +145,12 @@
     private async Task DeletePhoneNumber(M.PhoneNumber phone)
     {
         // ask if they are sure
-        await PhoneNumberService.DeletePhoneNumberAsync(phone.PhoneNumberId);
-        NavigationManager.NavigateTo(NavigationManager.Uri);
+        var confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "Is your hovercraft full of eels?");
+        if (confirmed)
+        {
+            await PhoneNumberService.DeletePhoneNumberAsync(phone.PhoneNumberId);
+            NavigationManager.NavigateTo(NavigationManager.Uri);
+        }
     }
 
   

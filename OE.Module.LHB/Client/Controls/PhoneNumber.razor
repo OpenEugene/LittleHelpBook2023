@@ -11,6 +11,10 @@
             <MudTextField Label="@Localizer["Number"]" @bind-Value="Phone.Number" For="@(() => Phone.Number)" />
             <MudTextField Label="@Localizer["Extension"]" @bind-Value="Phone.Extension" For="@(() => Phone.Extension)" />
             <MudTextField Label="@Localizer["Description"]" @bind-Value="Phone.Description" For="@(() => Phone.Description)" />
+            <MudSelect @bind-Value="@Phone.IsActive" Label="Is Active">
+                <MudSelectItem Value="@(false)">False</MudSelectItem>
+                <MudSelectItem Value="@(true)">True</MudSelectItem>
+            </MudSelect>
         </MudCardContent>
         <MudCardActions>
 
