@@ -37,6 +37,6 @@
         var returnAddy = await AddressService.AddAddressAsync(addr);
         
         var url = EditUrl("Detail", $"id={_id}");
-        NavigationManager.NavigateTo(url);
+        NavigationManager.NavigateTo(url,true);
     }
 }

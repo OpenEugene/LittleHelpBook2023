@@ -25,7 +25,7 @@
                 <MudTextField Label="@Localizer["EmailAddress"]" @bind-Value="_model.EmailAddress" For="@(() => _model.EmailAddress)"/>
                 <MudTextField Label="@Localizer["HoursOfOperation"]" @bind-Value="_model.HoursOfOperation" For="@(() => _model.HoursOfOperation)"/>
                 <MudField Label="Address(es)"/>
-                 <MudButton Color="Color.Surface" OnClick="@(()=> AddAddr())">@Localizer["Add Address"]</MudButton>
+                 <MudButton Color="Color.Primary" OnClick="@(()=> AddAddr())">@Localizer["Add Address"]</MudButton>
       
                 @if (_model.Addresses.Any() )
                 {
@@ -35,7 +35,7 @@
                     }
                 }
                 <MudField Label="Phone Number(s)"/>
-                <MudButton Color="Color.Surface" OnClick="@(()=> AddPhone())">@Localizer["Add Phone Number"]</MudButton>
+                <MudButton Color="Color.Primary" OnClick="@(()=> AddPhone())">@Localizer["Add Phone Number"]</MudButton>
 
                 @if (_model.PhoneNumbers.Any())
                 {
@@ -122,6 +122,7 @@
     {
         // ask if they are sure
         await AddressService.DeleteAddressAsync(addr.AddressId);
+        NavigationManager.NavigateTo(NavigationManager.Uri);
     }
 
     private void AddAddr()
@@ -139,6 +140,7 @@
     {
         // ask if they are sure
         await PhoneNumberService.DeletePhoneNumberAsync(phone.PhoneNumberId);
+        NavigationManager.NavigateTo(NavigationManager.Uri);
     }
 
   

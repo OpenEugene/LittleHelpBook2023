@@ -34,6 +34,7 @@
         _phone.ProviderId = _id;
         var returnPhoneNumber = await PhoneNumberService.AddPhoneNumberAsync(_phone);
         
-        Back();
+        var url = EditUrl("Detail", $"id={_id}");
+        NavigationManager.NavigateTo(url,true);
     }
 }

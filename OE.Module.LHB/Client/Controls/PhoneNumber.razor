@@ -29,7 +29,7 @@
     {
         await OnDelete.InvokeAsync(phoneNumber);
         var url = EditUrl("Detail", $"id={phoneNumber.ProviderId}");
-        NavigationManager.NavigateTo(url);
+        NavigationManager.NavigateTo(url,true);
     }
 
 }
