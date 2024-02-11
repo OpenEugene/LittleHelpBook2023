@@ -65,11 +65,12 @@
        if (string.IsNullOrWhiteSpace(_searchString))
            return true;
 
-       if (x.Description.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+       if (x.Name !=null && x.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
            return true;
 
-       if (x.Name.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+       if (x.Description !=null && x.Description.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
            return true;
+
 
        return false;
        };
