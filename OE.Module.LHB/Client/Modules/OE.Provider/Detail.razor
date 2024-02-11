@@ -159,11 +159,13 @@
     private async Task DeleteAddr(M.Address addr)
     {
         await AddressService.DeleteAddressAsync(addr.AddressId);
+        //TODO: refresh the list
     }
 
     private async Task DeleteAttribute(ProviderAttributeViewModel item)
     {
         await ProviderService.DeleteAttributeAsync(item.ProviderAttributeId);
+        //TODO: refresh the list
     }
 
     private void AddAddr()

@@ -1,0 +1,43 @@
+@using OE.Module.LHB.Services
+
+@namespace OE.Provider
+@inherits ModuleBase
+@inject ProviderService ProviderService
+@inject AttributeService AttributeService
+@inject NavigationManager NavigationManager
+@inject IStringLocalizer<Index> Localizer
+
+<ProviderAttribute Attributes="@_attributes" OnDelete="DeleteAttribute"></ProviderAttribute>
+
+
+@code {
+    MudForm form;
+
+    public override string Actions => "AddAddress";
+    public override bool UseAdminContainer => true;  //popup
+    public override string Title => "Manage Address";
+    private int _id;
+    private List<ProviderAttributeViewModel> _attributes = new();
+    private List<M.Attribute> _allAttributes = new();
+
+    bool success;
+    string[] errors = { };
+
+    protected override async Task OnInitializedAsync()
+    {
+        _id = int.Parse(PageState.QueryString["id"]);
+        _attributes = await ProviderService.GetAttributesForProviderAsync(_id);
+        _allAttributes = await AttributeService.GetAttributesAsync();
+    }
+
+    private void Back()
+    {
+        var url = EditUrl("Detail", $"id={_id}");
+        NavigationManager.NavigateTo(url);
+    }
+
+    private async Task DeleteAttribute(ProviderAttributeViewModel item)
+    {
+        await ProviderService.DeleteAttributeAsync(item.ProviderAttributeId);
+    }
+}

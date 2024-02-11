@@ -62,6 +62,15 @@ namespace OE.Module.LHB.Controllers
             return Ok(item);
         }
 
+        // GET api/<controller>/5
+        [HttpGet("ProviderAttributes/{id}")]
+        // [Authorize(Policy = PolicyNames.ViewModule)]
+        public ActionResult<List<ProviderViewModel>> GetProviderAttributes(int id)
+        {
+            var item = _lhbRepository.GetProviderAttributesByProviderId(id);
+            return Ok(item);
+        }
+
         // POST api/<controller>
         [HttpPost]
         [Authorize(Policy = PolicyNames.EditModule)]
