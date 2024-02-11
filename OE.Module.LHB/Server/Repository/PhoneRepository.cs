@@ -36,10 +36,10 @@ namespace OE.Module.LHB.Repository {
         }
 
         public void DeletePhoneNumber(int phoneNumberId) {
-            var item = _db.Address.Find(phoneNumberId);
+            var item = _db.PhoneNumber.Find(phoneNumberId);
 
             if (item == null) return;
-            _db.Address.Remove(item);
+            _db.PhoneNumber.Remove(item);
             _db.SaveChanges();
         }
     }

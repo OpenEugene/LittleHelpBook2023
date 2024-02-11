@@ -4,6 +4,7 @@
 @inherits ModuleBase
 @inject ProviderService ProviderService
 @inject AddressService AddressService
+@inject PhoneNumberService PhoneNumberService 
 @inject NavigationManager NavigationManager
 @inject IStringLocalizer<Edit> Localizer
 
@@ -24,7 +25,7 @@
                 <MudTextField Label="@Localizer["EmailAddress"]" @bind-Value="_model.EmailAddress" For="@(() => _model.EmailAddress)"/>
                 <MudTextField Label="@Localizer["HoursOfOperation"]" @bind-Value="_model.HoursOfOperation" For="@(() => _model.HoursOfOperation)"/>
                 <MudField Label="Address(es)"/>
-                 <MudButton Color="Color.Surface" OnClick="@(()=> AddAddr())">@Localizer["Add"]</MudButton>
+                 <MudButton Color="Color.Surface" OnClick="@(()=> AddAddr())">@Localizer["Add Address"]</MudButton>
       
                 @if (_model.Addresses.Any() )
                 {
@@ -33,23 +34,15 @@
                         <Address Addr="@addr" OnDelete="DeleteAddr"></Address>
                     }
                 }
+                <MudField Label="Phone Number(s)"/>
+                <MudButton Color="Color.Surface" OnClick="@(()=> AddPhone())">@Localizer["Add Phone Number"]</MudButton>
 
                 @if (_model.PhoneNumbers.Any())
                 {
-                    <MudField Label="Phone Number(s)"/>
+                   
                     @foreach (var phone in _model.PhoneNumbers)
                     {
-                        <MudCard>
-                            <MudCardContent>
-                                <MudTextField Label="@Localizer["AreaCode"]" @bind-Value="phone.AreaCode" For="@(() => phone.AreaCode)"/>
-                                <MudTextField Label="@Localizer["Number"]" @bind-Value="phone.Number" For="@(() => phone.Number)"/>
-                                <MudTextField Label="@Localizer["Extension"]" @bind-Value="phone.Extension" For="@(() => phone.Extension)"/>
-                                <MudTextField Label="@Localizer["Description"]" @bind-Value="phone.Description" For="@(() => phone.Description)"/>
-                            </MudCardContent>
-                            <MudCardActions>
-                                <MudButton Color="Color.Warning" OnClick="@(() => DeletePhone(phone))">@Localizer["Delete"]</MudButton>
-                            </MudCardActions>
-                        </MudCard>
+                        <PhoneNumber Phone="@phone" OnDelete="DeletePhoneNumber"></PhoneNumber>
                     }
                 }
                 <ValidationSummary @ref="summary"/>
@@ -101,24 +94,6 @@
         NavigationManager.NavigateTo(NavigateUrl());
     }
 
-    // private async Task Save()
-    // {
-    //     form.Validate();
-    //     if (form.IsValid)
-    //     {
-    //         try
-    //         {
-    //             await ProviderService.UpdateProviderAsync(_model);
-    //             AddModuleMessage(Localizer["Message.UpdateSuccess"], MessageType.Success);
-    //         }
-    //         catch (Exception ex)
-    //         {
-    //             logger.LogError(ex, "Error Saving LHB {id} {message}", _id, ex.Message);
-    //             AddModuleMessage(Localizer["Message.UpdateError"], MessageType.Error);
-    //         }
-    //     }
-    // }
-
     private void OnValidSubmit(EditContext context)
     {
         if (context.Validate())
@@ -143,22 +118,27 @@
         var foo = 0;
     }
 
-    private void DeleteAddr(M.Address addr)
+    private async Task DeleteAddr(M.Address addr)
     {
-        AddressService.DeleteAddressAsync(addr.AddressId);
+        // ask if they are sure
+        await AddressService.DeleteAddressAsync(addr.AddressId);
     }
 
-      private void AddAddr()
+    private void AddAddr()
     {
         var url = EditUrl("AddAddress", $"id={_id}");
         NavigationManager.NavigateTo(url);
     }
 
-
-    private void DeletePhone(M.PhoneNumber phone)
+    private void AddPhone()
+    {
+        var url = EditUrl("AddPhoneNumber", $"id={_id}");
+        NavigationManager.NavigateTo(url);
+    }
+    private async Task DeletePhoneNumber(M.PhoneNumber phone)
     {
         // ask if they are sure
-        // delete
+        await PhoneNumberService.DeletePhoneNumberAsync(phone.PhoneNumberId);
     }
 
   

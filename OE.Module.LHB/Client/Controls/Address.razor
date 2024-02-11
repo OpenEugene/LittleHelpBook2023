@@ -28,9 +28,7 @@
 @code {
     [Parameter] public M.Address Addr { get; set; }
     [Parameter] public EventCallback<M.Address> OnDelete { get; set; }
-
-    public bool thisFuckingValue { get => Addr.IsActive; set => Addr.IsActive = value; }
-
+    
     private async Task DeleteAddr(M.Address addr)
     {
         await OnDelete.InvokeAsync(addr);
