@@ -34,6 +34,10 @@ public partial class Address : ModelBase
     [Unicode(false)]
     public string PostalCode { get; set; }
 
+    public bool HasWheelchairAccess { get; set; }
+
+    public bool HasLanguageSupport { get; set; }
+
     [StringLength(64)]
     [Unicode(false)]
     public string Geocoding { get; set; }

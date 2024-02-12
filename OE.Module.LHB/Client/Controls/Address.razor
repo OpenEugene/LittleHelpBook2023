@@ -11,7 +11,15 @@
             <MudTextField Label="@Localizer["City"]" @bind-Value="Addr.City" For="@(() => Addr.City)" />
             <MudTextField Label="@Localizer["State"]" @bind-Value="Addr.State" For="@(() => Addr.State)" />
             <MudTextField Label="@Localizer["PostalCode"]" @bind-Value="Addr.PostalCode" For="@(() => Addr.PostalCode)" />
-            <MudSelect  @bind-Value="@Addr.IsActive" Label="Is Active">
+            <MudSelect @bind-Value="@Addr.HasWheelchairAccess" Label="Has Wheelchair Support">
+                <MudSelectItem Value="@(false)">False</MudSelectItem>
+                <MudSelectItem Value="@(true)">True</MudSelectItem>
+            </MudSelect>
+            <MudSelect @bind-Value="@Addr.HasLanguageSupport" Label="Has Language Support">
+                <MudSelectItem Value="@(false)">False</MudSelectItem>
+                <MudSelectItem Value="@(true)">True</MudSelectItem>
+            </MudSelect>
+            <MudSelect @bind-Value="@Addr.IsActive" Label="Is Active">
                 <MudSelectItem Value="@(false)">False</MudSelectItem>
                 <MudSelectItem Value="@(true)">True</MudSelectItem>
             </MudSelect>
