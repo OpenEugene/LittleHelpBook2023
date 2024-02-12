@@ -16,13 +16,13 @@
     <releaseNotes></releaseNotes>
     <summary></summary>
     <dependencies>
-      <dependency id="Oqtane.Framework" version="4.0.0" />
+      <dependency id="Oqtane.Framework" version="5.0.1" />
     </dependencies>
   </metadata>
   <files>
-    <file src="..\Client\bin\Release\net7.0\OE.Theme.LHB.Client.Oqtane.dll" target="lib\net7.0" /> 
-    <file src="..\Client\bin\Release\net7.0\OE.Theme.LHB.Client.Oqtane.pdb" target="lib\net7.0" />
-	<file src="..\Client\Libs\MudBlazor.dll" target="lib\net7.0" />
+    <file src="..\Client\bin\Release\net8.0\OE.Theme.LHB.Client.Oqtane.dll" target="lib\net8.0" /> 
+    <file src="..\Client\bin\Release\net8.0\OE.Theme.LHB.Client.Oqtane.pdb" target="lib\net8.0" />
+	<file src="..\Client\Libs\*.*" target="lib\net8.0" />
 
 	<file src="..\Client\wwwroot\**\*.*" target="wwwroot" /> 
     <file src="icon.png" target="" />
