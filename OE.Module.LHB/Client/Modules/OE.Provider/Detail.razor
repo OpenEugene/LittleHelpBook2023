@@ -35,26 +35,30 @@
                         <ProviderAttribute Attributes="@_model.ProviderAttributes" OnDelete="DeleteAttribute"></ProviderAttribute>
                     }
                 </MudField>
-                }
-                <MudField Label="Phone Number(s)"/>
+                <MudField Label="Phone Number(s)" Variant="Variant.Outlined" >
                 <MudButton Color="Color.Primary" OnClick="@(()=> AddPhone())">@Localizer["Add Phone Number"]</MudButton>
-
-
-                <MudField Label="Address(es)" Variant="Variant.Outlined">
-                    <MudButton Color="Color.Default" OnClick="@(()=> AddAddr())">@Localizer["Add"]</MudButton>
-                    @if (_model.Addresses.Any() )
-                @if (_orderedPhoneNumbers.Any())
+                @if (_model.PhoneNumbers.Any())
                 {
-                    @foreach (var phone in _orderedPhoneNumbers )
+                    @foreach (var phone in _model.PhoneNumbers)
                     {
-                        @foreach (var addr in _model.Addresses)
-                        {
-                            <Address Addr="@addr" OnDelete="DeleteAddr"></Address>
-                        }
                         <PhoneNumber Phone="@phone" OnDelete="DeletePhoneNumber"></PhoneNumber>
                     }
                 }
-
+                </MudField>
+                <MudField Label="Address(es)" Variant="Variant.Outlined">
+                <MudButton Color="Color.Default" OnClick="@(()=> AddAddr())">@Localizer["Add"]</MudButton>
+                   
+                @if (_model.Addresses.Any())
+                {
+                  
+                    @foreach (var addr in _model.Addresses)
+                    {
+                        <Address Addr="@addr" OnDelete="DeleteAddr"></Address>
+                    }
+                       
+                    
+                }
+                </MudField>
                 <ValidationSummary @ref="summary"/>
             </MudCardContent>
             <MudCardActions>
@@ -75,8 +79,8 @@
     private int _id;
     private ProviderViewModel _model;
 
-    private List<M.PhoneNumber> _orderedPhoneNumbers;
-    private List<M.Address> _orderedAddresses;
+    // private List<M.PhoneNumber> _orderedPhoneNumbers;
+    // private List<M.Address> _orderedAddresses;
 
     protected override async Task OnInitializedAsync()
     {
@@ -132,11 +136,7 @@
         var foo = 0;
     }
 
-    private async Task DeleteAddr(M.Address addr)
-    {
-        await AddressService.DeleteAddressAsync(addr.AddressId);
-        await Refresh();
-    }
+   
 
     private async Task DeleteAttribute(ProviderAttributeViewModel item)
     {
@@ -162,31 +162,6 @@
         await Refresh();
     }
 
-
-    private void OnValidSubmit(EditContext context)
-    {
-        if (context.Validate())
-        {
-            try
-            {
-                ProviderService.UpdateProviderAsync(_model);
-                AddModuleMessage(Localizer["Message.UpdateSuccess"], MessageType.Success);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, "Error Saving LHB {id} {message}", _id, ex.Message);
-                AddModuleMessage(Localizer["Message.UpdateError"], MessageType.Error);
-            }
-
-            NavigationManager.NavigateTo(NavigateUrl());
-        }
-    }
-
-    private void OnInvalidSubmit(EditContext context)
-    {
-        var foo = 0;
-    }
-
     private async Task DeleteAddr(M.Address addr)
     {
         // ask if they are sure
@@ -198,17 +173,12 @@
         }
     }
 
-    private void AddAddr()
-    {
-        var url = EditUrl("AddAddress", $"id={_id}");
-        NavigationManager.NavigateTo(url);
-    }
-
     private void AddPhone()
     {
         var url = EditUrl("AddPhoneNumber", $"id={_id}");
         NavigationManager.NavigateTo(url);
     }
+
     private async Task DeletePhoneNumber(M.PhoneNumber phone)
     {
         // ask if they are sure
