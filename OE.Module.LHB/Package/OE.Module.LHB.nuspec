@@ -16,16 +16,16 @@
     <releaseNotes></releaseNotes>
     <summary></summary>
     <dependencies>
-      <dependency id="Oqtane.Framework" version="4.0.0" />
+      <dependency id="Oqtane.Framework" version="5.0.1" />
     </dependencies>
   </metadata>
   <files>
-    <file src="..\Client\bin\Release\net7.0\OE.Module.LHB.Client.Oqtane.dll" target="lib\net7.0" /> 
-    <file src="..\Client\bin\Release\net7.0\OE.Module.LHB.Client.Oqtane.pdb" target="lib\net7.0" /> 
-    <file src="..\Server\bin\Release\net7.0\OE.Module.LHB.Server.Oqtane.dll" target="lib\net7.0" /> 
-    <file src="..\Server\bin\Release\net7.0\OE.Module.LHB.Server.Oqtane.pdb" target="lib\net7.0" /> 
-    <file src="..\Shared\bin\Release\net7.0\OE.Module.LHB.Shared.Oqtane.dll" target="lib\net7.0" /> 
-    <file src="..\Shared\bin\Release\net7.0\OE.Module.LHB.Shared.Oqtane.pdb" target="lib\net7.0" /> 
+    <file src="..\Client\bin\Release\net8.0\OE.Module.LHB.Client.Oqtane.dll" target="lib\net8.0" /> 
+    <file src="..\Client\bin\Release\net8.0\OE.Module.LHB.Client.Oqtane.pdb" target="lib\net8.0" /> 
+    <file src="..\Server\bin\Release\net8.0\OE.Module.LHB.Server.Oqtane.dll" target="lib\net8.0" /> 
+    <file src="..\Server\bin\Release\net8.0\OE.Module.LHB.Server.Oqtane.pdb" target="lib\net8.0" /> 
+    <file src="..\Shared\bin\Release\net8.0\OE.Module.LHB.Shared.Oqtane.dll" target="lib\net8.0" /> 
+    <file src="..\Shared\bin\Release\net8.0\OE.Module.LHB.Shared.Oqtane.pdb" target="lib\net8.0" /> 
     <file src="..\Server\wwwroot\**\*.*" target="wwwroot" /> 
     <file src="icon.png" target="" />
   </files>
