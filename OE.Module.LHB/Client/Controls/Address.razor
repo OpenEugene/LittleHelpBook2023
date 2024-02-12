@@ -41,7 +41,7 @@
     {
         await OnDelete.InvokeAsync(addr);
         var url = EditUrl("Detail", $"id={Addr.ProviderId}");
-        NavigationManager.NavigateTo(url);
+        NavigationManager.NavigateTo(url,true);
     }
 
    
