@@ -11,6 +11,7 @@ using System.Net;
 
 using M = OE.Module.LHB.Shared.Models;
 using OE.Module.LHB.Shared.ViewModels;
+using OE.Module.LHB.Shared.Models;
 
 namespace OE.Module.LHB.Controllers
 {
@@ -59,6 +60,15 @@ namespace OE.Module.LHB.Controllers
             if (item == null) { 
                 return NotFound();
             }
+            return Ok(item);
+        }
+
+        // GET api/<controller>/5
+        [HttpGet("ProviderAttributes/{id}")]
+        // [Authorize(Policy = PolicyNames.ViewModule)]
+        public ActionResult<List<ProviderViewModel>> GetProviderAttributes(int id)
+        {
+            var item = _lhbRepository.GetProviderAttributesByProviderId(id);
             return Ok(item);
         }
 
@@ -134,6 +144,41 @@ namespace OE.Module.LHB.Controllers
                 _logger.Log(LogLevel.Error, this, LogFunction.Security, "Bad Provider Delete Attempt {id}", id);
                 HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             }
+        }
+
+        // POST api/<controller>
+        [HttpPost]
+        public M.Address Post([FromBody] M.Address item)
+        {
+            if (ModelState.IsValid)
+            {
+                item = _lhbRepository.AddAddress(item);
+                _logger.Log(LogLevel.Information, this, LogFunction.Create, "Address Added {item}", item);
+            }
+            else
+            {
+                HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+
+                item = null;
+            }
+            return item;
+        } // POST api/<controller>
+        [HttpPost("ProviderAttribute")]
+        public M.ProviderAttribute Post([FromBody] M.ProviderAttribute item)
+        {
+            if (ModelState.IsValid)
+            {
+             
+                item = _lhbRepository.AddProviderAttribute(item);
+                _logger.Log(LogLevel.Information, this, LogFunction.Create, "ProviderAttribute Added {item}", item);
+            }
+            else
+            {
+                HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+
+                item = null;
+            }
+            return item;
         }
     }
 }

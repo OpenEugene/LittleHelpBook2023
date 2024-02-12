@@ -1,0 +1,26 @@
+﻿@inherits ModuleControlBase
+@inject IStringLocalizer<OE.Provider.Edit> Localizer
+@namespace OE.Module.LHB.Client.Controls
+
+@if (Attributes != null)
+{
+    <MudCard>
+        <MudCardContent>
+            @foreach(var item in Attributes){
+                <MudChip Color="Color.Primary" OnClose="@(()=>Closed(item))">@item.Attribute.Name</MudChip>
+            }
+        </MudCardContent>
+        <MudCardActions>
+
+        </MudCardActions>
+    </MudCard>
+}
+@code {
+    [Parameter] public List<ProviderAttributeViewModel> Attributes { get; set; }
+    [Parameter] public EventCallback<ProviderAttributeViewModel> OnDelete { get; set; }
+
+    async Task Closed(ProviderAttributeViewModel item)
+    {
+        await OnDelete.InvokeAsync(item);
+    }
+}

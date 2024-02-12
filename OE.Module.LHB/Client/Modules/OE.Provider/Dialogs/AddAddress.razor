@@ -1,0 +1,37 @@
+@using OE.Module.LHB.Services
+
+@namespace OE.Provider
+@inject AddressService AddressService
+@inject NavigationManager NavigationManager
+@inject IStringLocalizer<Index> Localizer
+@inject IDialogService DialogService
+
+<MudDialog>
+    <DialogContent>
+        <Address Addr="@addr"></Address>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Primary" OnClick="@(()=> AddAddr())">@Localizer["Save"]</MudButton>
+        <MudButton Color="Color.Secondary" OnClick="@(()=> Back())">@Localizer["Cancel"]</MudButton>
+    </DialogActions>
+</MudDialog>
+
+ @code {
+
+    private M.Address addr = new();
+
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [Parameter] public int Id { get; set; }
+
+    private void Back()
+    {
+        MudDialog.Cancel();
+    }
+
+    private async Task AddAddr()
+    {
+        addr.ProviderId = Id;
+        await AddressService.AddAddressAsync(addr);
+        Back();
+    }
+}

@@ -14,7 +14,7 @@ namespace OE.Module.LHB.Repository
         public virtual DbSet<M.Attribute> Attribute { get; set; }
         public virtual DbSet<M.PhoneNumber> PhoneNumber { get; set; }
         public virtual DbSet<M.Provider> Provider { get; set; }
-
+        public virtual DbSet<M.ProviderAttribute> ProviderAttribute { get; set; }
         public LHBContext(IDBContextDependencies DBContextDependencies) : base(DBContextDependencies)
         {
             // ContextBase handles multi-tenant database connections

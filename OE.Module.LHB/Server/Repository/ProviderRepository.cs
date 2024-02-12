@@ -36,7 +36,8 @@ namespace OE.Module.LHB.Repository
             }
             var vm = new ProviderViewModel(provider) {
                 Addresses = GetAddressesByProviderId(id),
-                PhoneNumbers = GetPhoneNumbersByProviderId(id)
+                PhoneNumbers = GetPhoneNumbersByProviderId(id),
+                ProviderAttributes = GetProviderAttributesByProviderId(id)
             };
 
             return vm;
@@ -106,5 +107,30 @@ namespace OE.Module.LHB.Repository
             _db.SaveChanges();
 
         }
+
+        public List<ProviderAttributeViewModel> GetProviderAttributesByProviderId(int providerId, bool tracking = false)
+        {
+            // get a list of attributes for a provider
+            var list = from p in _db.ProviderAttribute
+                       join a in _db.Attribute on p.AttributeId equals a.AttributeId
+                       where p.ProviderId == providerId
+                       select new ProviderAttributeViewModel
+                       {
+                           ProviderAttributeId = p.ProviderAttributeId,
+                           ProviderId = p.ProviderId,
+                           AttributeId = p.AttributeId,
+                           IsActive = p.IsActive,
+                           Attribute = a,
+                       };
+
+            return list.ToList();
+        }
+        public M.ProviderAttribute AddProviderAttribute(M.ProviderAttribute item)
+        {
+            _db.ProviderAttribute.Add(item);
+            _db.SaveChanges();
+            return item;
+        }
+
     }
 }
