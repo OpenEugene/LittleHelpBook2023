@@ -37,9 +37,9 @@
                 </MudField>
                 <MudField Label="Phone Number(s)" Variant="Variant.Outlined" >
                 <MudButton Color="Color.Primary" OnClick="@(()=> AddPhone())">@Localizer["Add Phone Number"]</MudButton>
-                @if (_model.PhoneNumbers.Any())
+                @if (_orderedPhoneNumbers.Any())
                 {
-                    @foreach (var phone in _model.PhoneNumbers)
+                        @foreach (var phone in _orderedPhoneNumbers)
                     {
                         <PhoneNumber Phone="@phone" OnDelete="DeletePhoneNumber"></PhoneNumber>
                     }
@@ -48,10 +48,10 @@
                 <MudField Label="Address(es)" Variant="Variant.Outlined">
                 <MudButton Color="Color.Default" OnClick="@(()=> AddAddr())">@Localizer["Add"]</MudButton>
                    
-                @if (_model.Addresses.Any())
+                @if (_orderedAddresses.Any())
                 {
-                  
-                    @foreach (var addr in _model.Addresses)
+
+                        @foreach (var addr in _orderedAddresses)
                     {
                         <Address Addr="@addr" OnDelete="DeleteAddr"></Address>
                     }
@@ -79,8 +79,8 @@
     private int _id;
     private ProviderViewModel _model;
 
-    // private List<M.PhoneNumber> _orderedPhoneNumbers;
-    // private List<M.Address> _orderedAddresses;
+    private List<M.PhoneNumber> _orderedPhoneNumbers;
+    private List<M.Address> _orderedAddresses;
 
     protected override async Task OnInitializedAsync()
     {
@@ -100,6 +100,8 @@
     private async Task Refresh()
     {
         _model = await ProviderService.GetProviderViewModelAsync(_id);
+        _orderedPhoneNumbers = _model.PhoneNumbers.OrderByDescending(p => p.IsActive).ToList();
+        _orderedAddresses = _model.Addresses.OrderByDescending(a => a.IsActive).ToList();
     }
 
     protected override async Task OnParametersSetAsync()
