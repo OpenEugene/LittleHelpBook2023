@@ -4,9 +4,12 @@
 @inherits ModuleBase
 @inject ProviderService ProviderService
 @inject AddressService AddressService
+@inject PhoneNumberService PhoneNumberService 
 @inject NavigationManager NavigationManager
 @inject IStringLocalizer<Edit> Localizer
 @inject IDialogService DialogService
+
+@inject IJSRuntime JsRuntime //Used for confirmation dialog
 
 @if (_model != null)
 {
@@ -32,39 +35,25 @@
                         <ProviderAttribute Attributes="@_model.ProviderAttributes" OnDelete="DeleteAttribute"></ProviderAttribute>
                     }
                 </MudField>
+                }
+                <MudField Label="Phone Number(s)"/>
+                <MudButton Color="Color.Primary" OnClick="@(()=> AddPhone())">@Localizer["Add Phone Number"]</MudButton>
 
 
                 <MudField Label="Address(es)" Variant="Variant.Outlined">
                     <MudButton Color="Color.Default" OnClick="@(()=> AddAddr())">@Localizer["Add"]</MudButton>
                     @if (_model.Addresses.Any() )
+                @if (_orderedPhoneNumbers.Any())
+                {
+                    @foreach (var phone in _orderedPhoneNumbers )
                     {
                         @foreach (var addr in _model.Addresses)
                         {
                             <Address Addr="@addr" OnDelete="DeleteAddr"></Address>
                         }
+                        <PhoneNumber Phone="@phone" OnDelete="DeletePhoneNumber"></PhoneNumber>
                     }
-                </MudField>
-
-                <MudField Label="Phone Numbers(s)" Variant="Variant.Outlined">
-                    <MudButton Color="Color.Default" OnClick="@(()=> AddAddr())">@Localizer["Add"]</MudButton>
-                    @if (_model.PhoneNumbers.Any())
-                    {
-                        @foreach (var phone in _model.PhoneNumbers)
-                        {
-                            <MudCard>
-                                <MudCardContent>
-                                    <MudTextField Label="@Localizer["AreaCode"]" @bind-Value="phone.AreaCode" For="@(() => phone.AreaCode)" />
-                                    <MudTextField Label="@Localizer["Number"]" @bind-Value="phone.Number" For="@(() => phone.Number)" />
-                                    <MudTextField Label="@Localizer["Extension"]" @bind-Value="phone.Extension" For="@(() => phone.Extension)" />
-                                    <MudTextField Label="@Localizer["Description"]" @bind-Value="phone.Description" For="@(() => phone.Description)" />
-                                </MudCardContent>
-                                <MudCardActions>
-                                    <MudButton Color="Color.Warning" OnClick="@(() => DeletePhone(phone))">@Localizer["Delete"]</MudButton>
-                                </MudCardActions>
-                            </MudCard>
-                        }
-                    }
-                </MudField>
+                }
 
                 <ValidationSummary @ref="summary"/>
             </MudCardContent>
@@ -76,20 +65,18 @@
     </EditForm>
 }
 
-@code {
+@code {    
     EditForm form;
 
-    ValidationSummary summary;
-
-    //public override SecurityAccessLevel SecurityAccessLevel => SecurityAccessLevel.View;
+   ValidationSummary summary;
     public override string Actions => "Detail";
     public override string Title => "Provider Details";
     public override bool UseAdminContainer => false;
     private int _id;
     private ProviderViewModel _model;
 
-    bool success;
-    string[] errors = { };
+    private List<M.PhoneNumber> _orderedPhoneNumbers;
+    private List<M.Address> _orderedAddresses;
 
     protected override async Task OnInitializedAsync()
     {
@@ -176,10 +163,61 @@
     }
 
 
-    private void DeletePhone(M.PhoneNumber phone)
+    private void OnValidSubmit(EditContext context)
+    {
+        if (context.Validate())
+        {
+            try
+            {
+                ProviderService.UpdateProviderAsync(_model);
+                AddModuleMessage(Localizer["Message.UpdateSuccess"], MessageType.Success);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error Saving LHB {id} {message}", _id, ex.Message);
+                AddModuleMessage(Localizer["Message.UpdateError"], MessageType.Error);
+            }
+
+            NavigationManager.NavigateTo(NavigateUrl());
+        }
+    }
+
+    private void OnInvalidSubmit(EditContext context)
+    {
+        var foo = 0;
+    }
+
+    private async Task DeleteAddr(M.Address addr)
     {
         // ask if they are sure
-        // delete
+        var confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to remove this address?");
+        if (confirmed)
+        {
+            await AddressService.DeleteAddressAsync(addr.AddressId);
+            NavigationManager.NavigateTo(NavigationManager.Uri);
+        }
+    }
+
+    private void AddAddr()
+    {
+        var url = EditUrl("AddAddress", $"id={_id}");
+        NavigationManager.NavigateTo(url);
+    }
+
+    private void AddPhone()
+    {
+        var url = EditUrl("AddPhoneNumber", $"id={_id}");
+        NavigationManager.NavigateTo(url);
+    }
+    private async Task DeletePhoneNumber(M.PhoneNumber phone)
+    {
+        // ask if they are sure
+        var confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "Is your hovercraft full of eels?");
+        if (confirmed)
+        {
+            await PhoneNumberService.DeletePhoneNumberAsync(phone.PhoneNumberId);
+            NavigationManager.NavigateTo(NavigationManager.Uri);
+        }
     }
 
   

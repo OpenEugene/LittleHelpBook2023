@@ -28,5 +28,7 @@ public partial class PhoneNumber : ModelBase
     [StringLength(4000)]
     public string L10N { get; set; }
 
+    public bool IsActive { get; set; }
+
 
 }
