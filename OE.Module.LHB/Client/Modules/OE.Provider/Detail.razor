@@ -96,13 +96,19 @@
         try
         {
             _id = int.Parse(PageState.QueryString["id"]);
-            _model = await ProviderService.GetProviderViewModelAsync(_id);
+            await Refresh();
+
         }
         catch (Exception ex)
         {
             await logger.LogError(ex, "Error Loading LHB {id} {message}", _id, ex.Message);
             AddModuleMessage(Localizer["Message.LoadError"], MessageType.Error);
         }
+    }
+
+    private async Task Refresh()
+    {
+        _model = await ProviderService.GetProviderViewModelAsync(_id);
     }
 
     protected override async Task OnParametersSetAsync()
@@ -114,24 +120,6 @@
     {
         NavigationManager.NavigateTo(NavigateUrl());
     }
-
-    // private async Task Save()
-    // {
-    //     form.Validate();
-    //     if (form.IsValid)
-    //     {
-    //         try
-    //         {
-    //             await ProviderService.UpdateProviderAsync(_model);
-    //             AddModuleMessage(Localizer["Message.UpdateSuccess"], MessageType.Success);
-    //         }
-    //         catch (Exception ex)
-    //         {
-    //             logger.LogError(ex, "Error Saving LHB {id} {message}", _id, ex.Message);
-    //             AddModuleMessage(Localizer["Message.UpdateError"], MessageType.Error);
-    //         }
-    //     }
-    // }
 
     private void OnValidSubmit(EditContext context)
     {
@@ -160,27 +148,31 @@
     private async Task DeleteAddr(M.Address addr)
     {
         await AddressService.DeleteAddressAsync(addr.AddressId);
-        //TODO: refresh the list
+        await Refresh();
     }
 
     private async Task DeleteAttribute(ProviderAttributeViewModel item)
     {
         await ProviderService.DeleteAttributeAsync(item.ProviderAttributeId);
-        //TODO: refresh the list
+        await Refresh();
     }
 
-    private void AddAddr()
+    private async Task AddAddr()
     {
         var parameters = new DialogParameters<AddAddress>();
         parameters.Add(x => x.Id, _id);
         var options = new DialogOptions { CloseOnEscapeKey = true };
-        DialogService.Show<AddAddress>("Add Address", options);
+        DialogService.Show<AddAddress>("Add Address", parameters, options);
+        await Refresh();
     }
 
-    private void AddAttributes()
+    private async Task AddAttributes()
     {
-        var url = EditUrl("AddAttribute", $"id={_id}");
-        NavigationManager.NavigateTo(url);
+        var parameters = new DialogParameters<AddAttribute>();
+        parameters.Add(x => x.Id, _id);
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        DialogService.Show<AddAttribute>("Add Service", parameters, options);
+        await Refresh();
     }
 
 

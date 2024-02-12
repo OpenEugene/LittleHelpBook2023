@@ -67,6 +67,7 @@ namespace OE.Module.LHB.Services
         }
         public async Task<M.ProviderAttribute> AddProviderAttribute(M.ProviderAttribute item)
         {
+            item.EnsureIAuditable();
             return await PostJsonAsync<M.ProviderAttribute>($"{Apiurl}/ProviderAttribute", item);
         }
 

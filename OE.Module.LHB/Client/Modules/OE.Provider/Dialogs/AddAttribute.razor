@@ -1,41 +1,43 @@
 @using OE.Module.LHB.Services
 
 @namespace OE.Provider
-@inherits ModuleBase
 @inject ProviderService ProviderService
 @inject AttributeService AttributeService
 @inject NavigationManager NavigationManager
 @inject IStringLocalizer<Index> Localizer
 
-<MudPaper>
-    <ProviderAttribute Attributes="@_attributes" OnDelete="DeleteAttribute"></ProviderAttribute>
-    <MudStack Row="true">
+<MudDialog>
+    <DialogContent>
+        <ProviderAttribute Attributes="@_attributes" OnDelete="DeleteAttribute"></ProviderAttribute>
+        <MudStack Row="true">
 
-        <MudSelect Label="Category" @bind-Value="_selectedCategory" OnValueChanged="OnCategoryChanged">
-            @foreach (var category in _categories)
-            {
-                <MudSelectItem Value="@category">@category.Name</MudSelectItem>
-            }
-        </MudSelect>
+            <MudSelect @ref="@_selectCategory" Label="Category" T="@M.Attribute" ValueChanged="OnCategoryChanged">
+                @foreach (var category in _categories)
+                {
+                    <MudSelectItem Value="@category">@category.Name</MudSelectItem>
+                }
+            </MudSelect>
 
-        <MudSelect Label="Subcategory" @bind-Value="_selectedSubcategory">
-            <MudSelectItem T="M.Attribute" Value="null" Text="(Just the Category)" />
-            @foreach (var subcategory in _subcategories)
-            {
-                <MudSelectItem Value="@subcategory">@subcategory.Name</MudSelectItem>
-            }
-        </MudSelect>
-    </MudStack>
-    <MudButton Color="Color.Primary" OnClick="@(()=> AddProviderAttribute())">Add</MudButton>
-</MudPaper>
+            <MudSelect Label="Subcategory" @bind-Value="_selectedSubcategory">
+                <MudSelectItem T="M.Attribute" Value="null" Text="(Just the Category)" />
+                @foreach (var subcategory in _subcategories)
+                {
+                    <MudSelectItem Value="@subcategory">@subcategory.Name</MudSelectItem>
+                }
+            </MudSelect>
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Primary" OnClick="@(()=> AddProviderAttribute())">Add</MudButton>
+        <MudButton Color="Color.Secondary" OnClick="@(()=> Back())">@Localizer["Cancel"]</MudButton>
+    </DialogActions>
+</MudDialog>
 
 @code {
-    MudForm form;
 
-    public override string Actions => "AddAttribute";
-    public override bool UseAdminContainer => true;  //popup
-    public override string Title => "Manage Services";
-    private int _id;
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [Parameter] public int Id { get; set; }
+
     private List<ProviderAttributeViewModel> _attributes = new();
     private List<M.Attribute> _allAttributes = new();
     private List<M.Attribute> _availableAttributes = new();
@@ -43,13 +45,13 @@
     private List<M.Attribute> _subcategories = new();
     private M.Attribute _selectedCategory;
     private M.Attribute _selectedSubcategory;
+    private MudSelect<M.Attribute> _selectCategory;
 
     bool success;
     string[] errors = { };
 
     protected override async Task OnInitializedAsync()
     {
-        _id = int.Parse(PageState.QueryString["id"]);
         await ReadData();
         _allAttributes = await AttributeService.GetAttributesAsync();
         ResetDropDowns();
@@ -57,7 +59,7 @@
 
     private async Task ReadData()
     {
-        _attributes = await ProviderService.GetAttributesForProviderAsync(_id);
+        _attributes = await ProviderService.GetAttributesForProviderAsync(Id);
     }
 
     private void ResetDropDowns()
@@ -88,7 +90,7 @@
         // create a new attribute based on the UI selections, re-read the data, and reset the dropdowns
         M.ProviderAttribute pa = new()
         {
-            ProviderId = _id,
+            ProviderId = Id,
             AttributeId = _selectedSubcategory?.AttributeId ?? _selectedCategory.AttributeId
         };
         await ProviderService.AddProviderAttribute(pa);
@@ -97,12 +99,12 @@
 
     private void Back()
     {
-        var url = EditUrl("Detail", $"id={_id}");
-        NavigationManager.NavigateTo(url);
+        MudDialog.Cancel();
     }
 
-    private void OnCategoryChanged(M.Attribute category)
+    private async Task OnCategoryChanged(M.Attribute category)
     {
+        _selectedCategory = _selectCategory.Value;
         if (category == null)
         {
             _subcategories = _allAttributes.Where(x => x.ParentAttributeId != null).ToList();
