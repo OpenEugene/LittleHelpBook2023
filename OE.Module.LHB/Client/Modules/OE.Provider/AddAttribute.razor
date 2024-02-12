@@ -7,18 +7,42 @@
 @inject NavigationManager NavigationManager
 @inject IStringLocalizer<Index> Localizer
 
-<ProviderAttribute Attributes="@_attributes" OnDelete="DeleteAttribute"></ProviderAttribute>
+<MudPaper>
+    <ProviderAttribute Attributes="@_attributes" OnDelete="DeleteAttribute"></ProviderAttribute>
+    <MudStack Row="true">
 
+        <MudSelect Label="Category" @bind-Value="_selectedCategory" OnValueChanged="OnCategoryChanged">
+            @foreach (var category in _categories)
+            {
+                <MudSelectItem Value="@category">@category.Name</MudSelectItem>
+            }
+        </MudSelect>
+
+        <MudSelect Label="Subcategory" @bind-Value="_selectedSubcategory">
+            <MudSelectItem T="M.Attribute" Value="null" Text="(Just the Category)" />
+            @foreach (var subcategory in _subcategories)
+            {
+                <MudSelectItem Value="@subcategory">@subcategory.Name</MudSelectItem>
+            }
+        </MudSelect>
+    </MudStack>
+    <MudButton Color="Color.Primary" OnClick="@(()=> AddProviderAttribute())">Add</MudButton>
+</MudPaper>
 
 @code {
     MudForm form;
 
-    public override string Actions => "AddAddress";
+    public override string Actions => "AddAttribute";
     public override bool UseAdminContainer => true;  //popup
-    public override string Title => "Manage Address";
+    public override string Title => "Manage Services";
     private int _id;
     private List<ProviderAttributeViewModel> _attributes = new();
     private List<M.Attribute> _allAttributes = new();
+    private List<M.Attribute> _availableAttributes = new();
+    private List<M.Attribute> _categories = new();
+    private List<M.Attribute> _subcategories = new();
+    private M.Attribute _selectedCategory;
+    private M.Attribute _selectedSubcategory;
 
     bool success;
     string[] errors = { };
@@ -26,8 +50,49 @@
     protected override async Task OnInitializedAsync()
     {
         _id = int.Parse(PageState.QueryString["id"]);
-        _attributes = await ProviderService.GetAttributesForProviderAsync(_id);
+        await ReadData();
         _allAttributes = await AttributeService.GetAttributesAsync();
+        ResetDropDowns();
+    }
+
+    private async Task ReadData()
+    {
+        _attributes = await ProviderService.GetAttributesForProviderAsync(_id);
+    }
+
+    private void ResetDropDowns()
+    {
+        _selectedCategory = null;
+        _selectedSubcategory = null;
+        // make a list of attributes that are not already assigned to this provider
+        _availableAttributes = _allAttributes.Where(x => !_attributes.Any(y => y.AttributeId == x.AttributeId)).ToList();
+        // make a list of attributes that don't have parent attributes
+        _categories = _allAttributes.Where(x => x.ParentAttributeId == null).ToList();
+        // make a list of attributes that have parent attributes
+        _subcategories = _allAttributes.Where(x => x.ParentAttributeId != null).ToList();
+    }
+
+    private async Task DeleteAttribute(ProviderAttributeViewModel item)
+    {
+        await ProviderService.DeleteAttributeAsync(item.ProviderAttributeId);
+        _attributes.Remove(item);
+        ResetDropDowns();
+    }
+
+    private async Task AddProviderAttribute()
+    {
+        if (_selectedSubcategory == null && _selectedCategory == null)
+        {
+            return;    
+        }
+        // create a new attribute based on the UI selections, re-read the data, and reset the dropdowns
+        M.ProviderAttribute pa = new()
+        {
+            ProviderId = _id,
+            AttributeId = _selectedSubcategory?.AttributeId ?? _selectedCategory.AttributeId
+        };
+        await ProviderService.AddProviderAttribute(pa);
+        Back();
     }
 
     private void Back()
@@ -36,8 +101,16 @@
         NavigationManager.NavigateTo(url);
     }
 
-    private async Task DeleteAttribute(ProviderAttributeViewModel item)
+    private void OnCategoryChanged(M.Attribute category)
     {
-        await ProviderService.DeleteAttributeAsync(item.ProviderAttributeId);
+        if (category == null)
+        {
+            _subcategories = _allAttributes.Where(x => x.ParentAttributeId != null).ToList();
+        }
+        else
+        {
+            _subcategories = _allAttributes.Where(x => x.ParentAttributeId == category.AttributeId).ToList();
+        }
+        _selectedSubcategory = null;
     }
 }

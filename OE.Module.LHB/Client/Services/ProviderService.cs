@@ -57,7 +57,6 @@ namespace OE.Module.LHB.Services
             await DeleteAsync($"{Apiurl}/{id}");
         }
 
-
         public async Task<List<ProviderAttributeViewModel>> GetAttributesForProviderAsync(int id) {
             var vm = await GetJsonAsync<List<ProviderAttributeViewModel>>($"{Apiurl}/ProviderAttributes/{id}");
             return vm;
@@ -66,5 +65,10 @@ namespace OE.Module.LHB.Services
         {
             await DeleteAsync($"{Apiurl}/{id}");
         }
+        public async Task<M.ProviderAttribute> AddProviderAttribute(M.ProviderAttribute item)
+        {
+            return await PostJsonAsync<M.ProviderAttribute>($"{Apiurl}/ProviderAttribute", item);
+        }
+
     }
 }

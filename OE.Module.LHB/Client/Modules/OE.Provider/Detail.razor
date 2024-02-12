@@ -6,6 +6,7 @@
 @inject AddressService AddressService
 @inject NavigationManager NavigationManager
 @inject IStringLocalizer<Edit> Localizer
+@inject IDialogService DialogService
 
 @if (_model != null)
 {
@@ -170,13 +171,15 @@
 
     private void AddAddr()
     {
-        var url = EditUrl("AddAddress", $"id={_id}");
-        NavigationManager.NavigateTo(url);
+        var parameters = new DialogParameters<AddAddress>();
+        parameters.Add(x => x.Id, _id);
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        DialogService.Show<AddAddress>("Add Address", options);
     }
 
     private void AddAttributes()
     {
-        var url = EditUrl("AddAttributes", $"id={_id}");
+        var url = EditUrl("AddAttribute", $"id={_id}");
         NavigationManager.NavigateTo(url);
     }
 

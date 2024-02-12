@@ -125,5 +125,12 @@ namespace OE.Module.LHB.Repository
 
             return list.ToList();
         }
+        public M.ProviderAttribute AddProviderAttribute(M.ProviderAttribute item)
+        {
+            _db.ProviderAttribute.Add(item);
+            _db.SaveChanges();
+            return item;
+        }
+
     }
 }

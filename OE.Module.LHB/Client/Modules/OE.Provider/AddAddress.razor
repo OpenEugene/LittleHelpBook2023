@@ -5,42 +5,34 @@
 @inject AddressService AddressService
 @inject NavigationManager NavigationManager
 @inject IStringLocalizer<Index> Localizer
+@inject IDialogService DialogService
 
-<Address Addr="@addr"></Address>
-<MudButton Color="Color.Primary" OnClick="@(()=> AddAddr())">@Localizer["Save"]</MudButton>
-<MudButton Color="Color.Secondary" OnClick="@(()=> Back())">@Localizer["Cancel"]</MudButton>
+<MudDialog>
+    <DialogContent>
+        <Address Addr="@addr"></Address>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Primary" OnClick="@(()=> AddAddr())">@Localizer["Save"]</MudButton>
+        <MudButton Color="Color.Secondary" OnClick="@(()=> Back())">@Localizer["Cancel"]</MudButton>
+    </DialogActions>
+</MudDialog>
 
+ @code {
 
-@code {
-    MudForm form;
-
-    public override string Actions => "AddAddress";
-    public override bool UseAdminContainer => true;  //popup
-    public override string Title => "Manage Address";
-    private int _id;
     private M.Address addr = new();
 
-    bool success;
-    string[] errors = { };
-
-
-    protected override async Task OnInitializedAsync()
-    {
-        _id = int.Parse(PageState.QueryString["id"]);
-    }
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [Parameter] public int Id { get; set; }
 
     private void Back()
     {
-        var url = EditUrl("Detail", $"id={_id}");
-        NavigationManager.NavigateTo(url);
+        MudDialog.Cancel();
     }
 
     private async Task AddAddr()
     {
-        addr.ProviderId = _id;  // this is great!!!
+        addr.ProviderId = Id;
         await AddressService.AddAddressAsync(addr);
-        
-        var url = EditUrl("Detail", $"id={_id}");
-        NavigationManager.NavigateTo(url);
+        Back();
     }
 }
