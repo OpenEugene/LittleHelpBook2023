@@ -94,7 +94,7 @@
             AttributeId = _selectedSubcategory?.AttributeId ?? _selectedCategory.AttributeId
         };
         await ProviderService.AddProviderAttribute(pa);
-        Back();
+        MudDialog.Close();
     }
 
     private void Back()

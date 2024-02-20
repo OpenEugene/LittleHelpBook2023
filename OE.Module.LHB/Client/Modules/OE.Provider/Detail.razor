@@ -21,10 +21,10 @@
             <MudCardContent>
                 <DataAnnotationsValidator/>
                 <MudTextField Label="@Localizer["Name"]" @bind-Value="_model.Name" For="@(() => _model.Name)"/>
-                <MudTextField Label="@Localizer["Description"]" @bind-Value="_model.Description" For="@(() => _model.Description)"/>
-                <MudTextField Label="@Localizer["WebAddress"]" @bind-Value="_model.WebAddress" For="@(() => _model.WebAddress)"/>
-                <MudTextField Label="@Localizer["EmailAddress"]" @bind-Value="_model.EmailAddress" For="@(() => _model.EmailAddress)"/>
-                <MudTextField Label="@Localizer["HoursOfOperation"]" @bind-Value="_model.HoursOfOperation" For="@(() => _model.HoursOfOperation)"/>
+                <MudTextField Label="@Localizer["Description"]" @bind-Value="_model.Description" For="@(() => _model.Description)" Lines="5"/>
+                <MudTextField Label="@Localizer["Web Address"]" @bind-Value="_model.WebAddress" For="@(() => _model.WebAddress)"/>
+                <MudTextField Label="@Localizer["Email Address"]" @bind-Value="_model.EmailAddress" For="@(() => _model.EmailAddress)"/>
+                <MudTextField Label="@Localizer["Hours of Operation"]" @bind-Value="_model.HoursOfOperation" For="@(() => _model.HoursOfOperation)"/>
 
                 <MudField Label="Services" Variant="Variant.Outlined">
                     <MudButton Color="Color.Primary" OnClick="@(() => AddAttributes())">@Localizer["Add Attribute"]</MudButton>
@@ -132,13 +132,19 @@
         var parameters = new DialogParameters<AddAttribute>();
         parameters.Add(x => x.Id, _id);
         var options = new DialogOptions { CloseOnEscapeKey = true };
-        await DialogService.ShowAsync<AddAttribute>("Add Service", parameters, options);
-        await Refresh();
+        var dialog = await DialogService.ShowAsync<AddAttribute>("Add Service", parameters, options);
+        var result = await dialog.Result;
+        if (!result.Canceled)
+        {
+            await Refresh();
+            StateHasChanged();
+        }
     }
 
     private async Task DeleteAttribute(ProviderAttributeViewModel item) {
         await ProviderService.DeleteAttributeAsync(item.ProviderAttributeId);
         await Refresh();
+        StateHasChanged();
     }
 
 
@@ -149,7 +155,8 @@
         var dialog = await DialogService.ShowAsync<AddAddress>("Add Address", parameters, options);
         var result = await dialog.Result;
         if (!result.Canceled) {
-            NavigationManager.NavigateTo(NavigationManager.Uri, true);
+            await Refresh();
+            StateHasChanged();
         }
     }
 
@@ -157,8 +164,8 @@
         // ask if they are sure
         var result = await Mbox.Show();
         if (result == true) {
-            await AddressService.DeleteAddressAsync(addr.AddressId);
-            NavigationManager.NavigateTo(NavigationManager.Uri,true);
+            await Refresh();
+            StateHasChanged();
         }
     }
 
@@ -170,7 +177,8 @@
         var result = await dialog.Result;
         if (!result.Canceled)
         {
-            NavigationManager.NavigateTo(NavigationManager.Uri, true);
+            await Refresh();
+            StateHasChanged();
         }
     }
 
@@ -178,7 +186,8 @@
         var result = await Mbox.Show();
         if (result == true) {
             await PhoneNumberService.DeletePhoneNumberAsync(phone.PhoneNumberId);
-            NavigationManager.NavigateTo(NavigationManager.Uri,true);
+            await Refresh();
+            StateHasChanged();
         }
     }
 

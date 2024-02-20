@@ -63,7 +63,7 @@ namespace OE.Module.LHB.Services
         }
         public async Task DeleteAttributeAsync(int id)
         {
-            await DeleteAsync($"{Apiurl}/{id}");
+            await DeleteAsync($"{Apiurl}/ProviderAttribute/{id}");
         }
         public async Task<M.ProviderAttribute> AddProviderAttribute(M.ProviderAttribute item)
         {

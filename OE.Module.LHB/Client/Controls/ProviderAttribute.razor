@@ -18,7 +18,7 @@
 @code {
     [Parameter] public List<ProviderAttributeViewModel> Attributes { get; set; }
     [Parameter] public EventCallback<ProviderAttributeViewModel> OnDelete { get; set; }
-
+    
     async Task Closed(ProviderAttributeViewModel item)
     {
         await OnDelete.InvokeAsync(item);

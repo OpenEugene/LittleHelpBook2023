@@ -180,5 +180,23 @@ namespace OE.Module.LHB.Controllers
             }
             return item;
         }
+
+        // DELETE api/<controller>/5
+        [HttpDelete("ProviderAttribute/{id}")]
+        [Authorize(Policy = PolicyNames.EditModule)]
+        public void DeleteProviderAttribute(int id)
+        {
+           var item = _lhbRepository.GetProviderAttribute(id);
+            if (item != null)
+            {
+                _lhbRepository.DeleteProviderAttribute(id);
+                _logger.Log(LogLevel.Information, this, LogFunction.Delete, "Provider Deleted {id}", id);
+            }
+            else
+            {
+                _logger.Log(LogLevel.Error, this, LogFunction.Security, "Bad Provider Delete Attempt {id}", id);
+                HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            }
+        }
     }
 }

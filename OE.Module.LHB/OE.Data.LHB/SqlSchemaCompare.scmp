@@ -7,10 +7,9 @@
     </ConnectionBasedModelProvider>
   </SourceModelProvider>
   <TargetModelProvider>
-    <ProjectBasedModelProvider>
-      <ProjectGuid>{bc025fa7-0025-4ddb-93f6-c97b4d91833b}</ProjectGuid>
-      <Name>OE.Data.LHB</Name>
-    </ProjectBasedModelProvider>
+    <ConnectionBasedModelProvider>
+      <ConnectionString>Data Source=little-help-book-sql.database.windows.net;Initial Catalog=little-help-book-sqldb;Persist Security Info=True;User ID=lhbadmin;Pooling=False;Multiple Active Result Sets=False;Connect Timeout=60;Encrypt=True;Trust Server Certificate=False;Command Timeout=0</ConnectionString>
+    </ConnectionBasedModelProvider>
   </TargetModelProvider>
   <SchemaCompareSettingsService>
     <SchemaCompareSettingsService>
@@ -342,11 +341,11 @@
       </PropertyElementName>
       <PropertyElementName>
         <Name>TargetDatabaseName</Name>
-        <Value>OE.Data.LHB</Value>
+        <Value>little-help-book-sqldb</Value>
       </PropertyElementName>
       <PropertyElementName>
         <Name>TargetConnectionString</Name>
-        <Value>Integrated Security=True;Pooling=False;Connect Timeout=30</Value>
+        <Value>Data Source=little-help-book-sql.database.windows.net;Initial Catalog=little-help-book-sqldb;Persist Security Info=True;User ID=lhbadmin;Pooling=False;Multiple Active Result Sets=False;Connect Timeout=60;Encrypt=True;Trust Server Certificate=False;Application Name="Microsoft SQL Server Data Tools, Schema Compare";Command Timeout=0</Value>
       </PropertyElementName>
       <PropertyElementName>
         <Name>TreatVerificationErrorsAsWarnings</Name>

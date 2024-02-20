@@ -108,6 +108,8 @@ namespace OE.Module.LHB.Repository
 
         }
 
+        // Provider Attributes could be a separate file, but it's all the same partial class
+
         public List<ProviderAttributeViewModel> GetProviderAttributesByProviderId(int providerId, bool tracking = false)
         {
             // get a list of attributes for a provider
@@ -119,17 +121,35 @@ namespace OE.Module.LHB.Repository
                            ProviderAttributeId = p.ProviderAttributeId,
                            ProviderId = p.ProviderId,
                            AttributeId = p.AttributeId,
-                           IsActive = p.IsActive,
                            Attribute = a,
                        };
 
             return list.ToList();
         }
+
+        public ProviderAttribute GetProviderAttribute(int id, bool tracking = false)
+        {
+            // get a list of attributes for a provider
+            var item = _db.ProviderAttribute.Find(id);
+
+            return item;
+        }
+
         public M.ProviderAttribute AddProviderAttribute(M.ProviderAttribute item)
         {
             _db.ProviderAttribute.Add(item);
             _db.SaveChanges();
             return item;
+        }
+
+        public void DeleteProviderAttribute(int providerAttributeId)
+        {
+            var item = _db.ProviderAttribute.Find(providerAttributeId);
+
+            if (item == null) return;
+            _db.ProviderAttribute.Remove(item);
+            _db.SaveChanges();
+
         }
 
     }

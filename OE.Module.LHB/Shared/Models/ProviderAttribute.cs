@@ -17,9 +17,5 @@ public partial class ProviderAttribute : ModelBase
 
     public int AttributeId { get; set; }
 
-    [Required]
-    public bool? IsActive { get; set; }
-
-
 
 }
