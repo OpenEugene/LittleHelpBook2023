@@ -29,7 +29,7 @@
                 <MudField Label="Services" Variant="Variant.Outlined">
                     <MudButton Color="Color.Primary" OnClick="@(() => AddAttributes())">@Localizer["Add Attribute"]</MudButton>
                     @if (_model.ProviderAttributes.Any()) {
-                        <ProviderAttribute Attributes="@_model.ProviderAttributes" OnDelete="DeleteAttribute"></ProviderAttribute>
+                        <ProviderAttribute Attributes="@_model.ProviderAttributes" OnDelete="DeleteAttribute"tele></ProviderAttribute>
                     }
                 </MudField>
                 <MudField Label="Phone Number(s)" Variant="Variant.Outlined">
