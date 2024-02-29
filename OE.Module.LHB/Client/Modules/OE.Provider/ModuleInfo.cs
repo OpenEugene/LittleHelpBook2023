@@ -9,9 +9,9 @@ namespace OE.Module.Provider
         {
             Name = "Provider",
             Description = "Providers",
-            Version = "1.0.1",
+            Version = "1.0.2",
             ServerManagerType = "OE.Module.LHB.Manager.LHBManager, OE.Module.LHB.Server.Oqtane",
-            ReleaseVersions = "1.0.1",
+            ReleaseVersions = "1.0.2",
             Dependencies = "OE.Module.LHB.Shared.Oqtane",
             PackageName = "OE.Module.LHB"
         };

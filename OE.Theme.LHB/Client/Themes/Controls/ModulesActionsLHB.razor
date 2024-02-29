@@ -1,39 +1,84 @@
 ﻿@namespace Oqtane.Themes.Controls
+@using OE.Theme.LHB.Client.Themes.Controls
 @inherits ModuleActionsBase
+@inject IDialogService DialogService
 @attribute [OqtaneIgnore]
 
 @if (PageState.EditMode && UserSecurity.IsAuthorized(PageState.User, PermissionNames.Edit, PageState.Page.PermissionList) && PageState.Action == Constants.DefaultAction)
 {
-    <MudMenu EndIcon="@MudBlazor.Icons.Material.Filled.MoreVert">
-            @foreach (var action in Actions.Where(item => !item.Name.Contains("Pane")))
-            {
-                if (string.IsNullOrEmpty(action.Name))
-                {
-                    <MudDivider />
-                }
-                else
-                {
-				<MudMenuItem OnClick="(async () => await ModuleAction(action))">
-					<MudText>@action.Name</MudText>
-                </MudMenuItem>
-                }
-            }
-            @if (Actions.Where(item => item.Name.Contains("Pane")).Any())
-            {
-			<MudMenuItem >
-                <MudMenu Label="Move To &gt;" ActivationEvent="MouseEvent.MouseOver" AnchorOrigin="Origin.TopRight" TransformOrigin="Origin.TopLeft">
-                 @foreach (var action in Actions.Where(item => item.Name.Contains("Pane")))
-                    {
-                        <MudMenuItem OnClick="(async () => await ModuleAction(action))">
-                            <MudText>@action.Name</MudText>
-                        </MudMenuItem>
-                    }
-                </MudMenu>
-			</MudMenuItem>
-				
-            }
-	</MudMenu>
+	<MudGrid Justify="Justify.FlexStart">
+		<MudItem>
+			<MudMenu Icon="@MB.Icons.Material.Filled.Settings" Color="Color.Primary" AnchorOrigin="Origin.BottomCenter" Dense>
+				<MudMenuItem OnClick="Settings">Module Settings</MudMenuItem>
+				<MudMenuItem OnClick="MoreSettings">More Settings</MudMenuItem>
+			</MudMenu>
+		</MudItem>
+		<MudItem>
+			@if (Actions.Where(item => item.Name.Contains("Pane")).Any())
+			{
+				<MudMenu Icon="@MB.Icons.Material.Filled.ArrowCircleDown" Color="Color.Primary" AnchorOrigin="Origin.BottomCenter" Dense>
+					@foreach (var action in Actions.Where(item => item.Name.Contains("Pane")))
+					{
+						<MudMenuItem OnClick="(async () => await ModuleAction(action))">
+							@action.Name
+						</MudMenuItem>
+					}
+				</MudMenu>
+			}
+		</MudItem>
+	</MudGrid>
+
+
 }
 @code {
+	private async Task Settings()
+	{
+		Type _moduleSettingsType;
+		string _moduleSettingsTitle = "Module Settings";
+		RenderFragment _moduleSettingsComponent = null;
+		object _moduleSettings;
 
+		var action = Actions.Where(item => item.Name.Contains("Settings")).FirstOrDefault();
+
+		if (!string.IsNullOrEmpty(ModuleState.ModuleDefinition.SettingsType))
+		{
+			// module settings type explicitly declared in IModule interface
+			_moduleSettingsType = Type.GetType(ModuleState.ModuleDefinition.SettingsType);
+		}
+		else
+		{
+			// legacy support - module settings type determined by convention ( ie. existence of a "Settings.razor" component in module )
+			_moduleSettingsType = Type.GetType(ModuleState.ModuleDefinition.ControlTypeTemplate.Replace(Constants.ActionToken, "Settings"), false, true);
+		}
+		if (_moduleSettingsType != null)
+		{
+			var moduleobject = Activator.CreateInstance(_moduleSettingsType) as IModuleControl;
+			if (!string.IsNullOrEmpty(moduleobject.Title))
+			{
+				_moduleSettingsTitle = moduleobject.Title;
+			}
+
+		}
+
+		var options = new DialogOptions
+			{
+				CloseOnEscapeKey = true,
+				FullWidth = true
+			};
+
+		var parameters = new DialogParameters()
+			{
+				["ModuleSettingsType"] = _moduleSettingsType,
+				["Module"] = ModuleState
+			};
+		var dialog = DialogService.Show<SettingsDialog>(_moduleSettingsTitle, parameters, options);
+		var result = await dialog.Result;
+
+
+	}
+
+	private async Task MoreSettings()
+	{
+		await ModuleAction(Actions.Where(item => item.Name == "More Settings").FirstOrDefault());
+	}
 }

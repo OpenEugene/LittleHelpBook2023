@@ -8,7 +8,10 @@
 
 <MudDialog>
     <DialogContent>
-        <ProviderAttribute Attributes="@_attributes" OnDelete="DeleteAttribute"></ProviderAttribute>
+        @if (_attributes != null)
+        {
+            <ProviderAttribute Attributes="@_attributes" OnDelete="DeleteAttribute"></ProviderAttribute>
+        }
         <MudStack Row="true">
 
             <MudSelect @ref="@_selectCategory" Label="Category" T="@M.Attribute" ValueChanged="OnCategoryChanged">
@@ -38,7 +41,7 @@
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
     [Parameter] public int Id { get; set; }
 
-    private List<ProviderAttributeViewModel> _attributes = new();
+    private List<ProviderAttributeViewModel> _attributes;
     private List<M.Attribute> _allAttributes = new();
     private List<M.Attribute> _availableAttributes = new();
     private List<M.Attribute> _categories = new();
@@ -72,6 +75,7 @@
         _categories = _allAttributes.Where(x => x.ParentAttributeId == null).ToList();
         // make a list of attributes that have parent attributes
         _subcategories = _allAttributes.Where(x => x.ParentAttributeId != null).ToList();
+       
     }
 
     private async Task DeleteAttribute(ProviderAttributeViewModel item)

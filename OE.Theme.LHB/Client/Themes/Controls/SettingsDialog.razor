@@ -1,0 +1,50 @@
+@using static Oqtane.Themes.Controls.ModuleActionsBase
+@using Oqtane.Interfaces
+@inherits ThemeControlBase
+@inject IModuleDefinitionService ModuleDefinitionService
+@inject IModuleService ModuleService
+@inject IPageModuleService PageModuleService
+
+<MudDialog>
+    <DialogContent>
+        @if (ModuleSettingsType != null)
+        {
+            <CascadingValue Value="@Module">
+                <DynamicComponent @ref="control" Type="@ModuleSettingsType" />
+            </CascadingValue>
+        }
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="@(async () => await Submit())">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+@code {
+
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [Parameter] public Type ModuleSettingsType { get; set; }
+    [Parameter] public Module Module { get; set; }
+
+    DynamicComponent control;
+
+    protected override async Task OnInitializedAsync()
+    {
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+       
+    }
+
+    async Task Submit()
+    {
+        if (control?.Instance is ISettingsControl){
+            await (control.Instance as ISettingsControl)?.UpdateSettings();
+        }
+        MudDialog.Close(DialogResult.Ok(true));
+    }
+
+    void Cancel() => MudDialog.Cancel();
+
+
+}
