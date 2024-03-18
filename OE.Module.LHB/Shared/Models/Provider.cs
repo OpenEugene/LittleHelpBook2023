@@ -28,7 +28,7 @@ public partial class Provider : ModelBase
     public string HoursOfOperation { get; set; }
 
     [Required]
-    public bool? IsActive { get; set; }
+    public bool IsActive { get; set; }
 
     [Column("l10N")]
     public string L10N { get; set; }

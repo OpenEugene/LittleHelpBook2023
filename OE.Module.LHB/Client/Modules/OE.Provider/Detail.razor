@@ -25,7 +25,11 @@
                 <MudTextField Label="@Localizer["Web Address"]" @bind-Value="_model.WebAddress" For="@(() => _model.WebAddress)"/>
                 <MudTextField Label="@Localizer["Email Address"]" @bind-Value="_model.EmailAddress" For="@(() => _model.EmailAddress)"/>
                 <MudTextField Label="@Localizer["Hours of Operation"]" @bind-Value="_model.HoursOfOperation" For="@(() => _model.HoursOfOperation)"/>
-
+                <MudSelect @bind-Value="@_model.IsActive" Label="Is Active">
+                    <MudSelectItem Value="@(false)">False</MudSelectItem>
+                    <MudSelectItem Value="@(true)">True</MudSelectItem>
+                </MudSelect>
+                
                 <MudField Label="Services" Variant="Variant.Outlined">
                     <MudButton Color="Color.Primary" OnClick="@(() => AddAttributes())">@Localizer["Add Attribute"]</MudButton>
                     @if (_model.ProviderAttributes.Any()) {
